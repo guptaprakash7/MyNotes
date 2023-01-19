@@ -1,0 +1,67 @@
+
+	
+Mongo Db:
+
+1. Download ni hua pehle s hi pada the check karna h isko
+2. go to programfiles> mongodb>server>4.0>bin> run command mongod
+3. mongod is use to make the connection with the db
+4. mongo is used to execute the command in mongodb
+5. database > collections > documents
+6. use testdb to create the database
+7. db command to know which db we are using
+8. show db to know how many database are there and show collection -- to show the collection in the database
+9. db.dropdatabase() to drop the database and db.collectionname.drop() to drop the collection
+10. db.createCollections("test")
+11. db.newcollection.insert("") other way to create collection by directly inserting the value to it
+12. db.newcollection.drop() to drop the collection or we can say the table
+13. db.employees.find() to retrieve the data and in cmd or mongo shell to get the data in structured form add .Pretty() in the end
+14. db.employees.findOne() similar as top 1
+15. db.employees.find(
+{
+"Age": {$lt:"30"}
+}
+)
+
+16. db.employees.find(
+{
+"Skill": "MongoDB", "Salary": "80000"
+}
+) -- this is the and condition
+17. db.employees.find(
+{
+$or: [{"Skill":"MongoDB" }, {"Salary":"10000"}]
+}
+) -- or condition
+
+18. db.employees.update(
+{"_id":ObjectId("5fd0ffa8e6387f585fe63afb")},
+{$set:{"Salary":"800"}}
+) -- update record
+
+19. db.employees.update(
+{"Skill":"MongoDB"},
+{$set: {"Salary":"8003"}},
+{multi: true}
+) -- if we not add multi then it will update the only one record 
+
+20: db.employees.remove({}) is the command to remove the record
+21: db.employees.find({}, {"FirstName":1}) -- retrieve selected fields
+22. db.employees.find().limit(5) to get five records
+23. db.employees.find({}, {"FirstName":1, "LastName":1, "_id":0}).skip(2)
+24. db.employees.find({}, {"FirstName":1, "LastName":1, "_id":0}).sort({"FirstName": 1}) - sort the document
+25. db.employees.ensureIndex({"Email":1}) - to create the index -- create index on the fields which are unique like email
+26. db.employees.getIndexes()
+27. db.employees.dropIndex({"Email":1})
+28. db.employees.aggregate([{$group:{_id:"$Gender", Total:{$sum:1}}}])
+29. db.employees.aggregate([{$group:{_id:"$Gender", MaxAge:{$max:1}}}])
+30. mongorestore --db company dump/company to restore the db
+31. mongodump --db company       --- to backup the db
+32. mongodump --db company --collection collectionname
+33. mongorestore --db company --collection collectionname dump/company/collectionname to restore the db
+
+
+
+Mern:
+
+1. install the router package in frontend using command
+     > npm install --save react-router-dom@5--save-exact

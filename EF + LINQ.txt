@@ -1,0 +1,664 @@
+
+	
+	
+
+Entity Framework:(it create the classes and properties on the basis of db objects)
+1. ORM - object relational model.
+2. We can install it through the npm package manager.
+3. Add ado.net entity model. 
+4. Entitysetname - name of the table.
+5. Scalar properties - means field of the table.	
+	
+ <--Steps for EF 5.-->
+  1. Schema first approach. - in this we select generate from database. and create the classes from the database
+	1. Add empty web.form and add grid view and entity data source.
+	2. Edit entity data source and select Name db context - which is our connection string name.
+	3. Then select the entity set name means table.
+	4. For employees - go to edit columns and select a template and then in that template add grid viewname
+	5. arrow of grid view and select edit binding then in custom binding - Write Eval("Employees")
+	6. And in parent entity data source in include properties write employee.
+
+2. Modal First Approach(select empty modal) - In this schema of db in query form can be get by model.
+   1. Right click - then add - entity 
+   2. right click - then add - scalar properties.
+   3. Right click and select association - for relationship between the two table.
+   4. Right click - Generate database from modal to create the schema.
+
+3. Code First approach - By code It will generate the database and tables also. 
+      1. First create the classes and properties.
+	  2. Create another class which inherit from DbContext and have DBset of employee and department.
+	  3. Create another class which holds the data.
+	  4. Here we add objectdatasource instead of entitydatasource.
+      5. After run it will create the database and table also. 
+	  6. In Employee table it will create the foreign key with name Department_Id - to remove underscore
+	         First we have to create the property in Employee class with name DepartmentId and then add a attribute [ForeignKey("DepartmentId")]
+			 If we need to change tablename and column name we have to use --     [Table("tblEmployees")]  
+			  for column -         [Column("First_Name")]
+      7. If We change any property or add a property then we get the error of model is not sync with the database and .net framework detect this using system table
+	    "MigrationHistory". And then in global assembly class - global.asax - in application_start method 
+		write this code  Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EmployeeDBContext1>());
+		
+	  8. To insert the data from code we have to create a new class and inhert it from DropCreateDatabaseIfModelChanges<EmployeeDBContext1>
+	     and override the seed method. And then in application_start in setiniliazer create the instance of this class instead of DropCreateDatabaseIfModelChanges<EmployeeDBContext1>
+4. To insert, update and delete using the stored procedure - schema approach means generated from database approach.
+        1. First create empty asp.net application then add ado.net and bind it to the db.
+        2. Create webform and add gridview, details view(for add data) and entitydatasource.
+        3. enable insert in detail view and in grid view both delete and update.		
+5. to CRUD using sp from code first approach.
+        1. Create employee class with its properties.
+		2. Create EmployeeDBContext class and inherit from dbcontext class and create a dbset property of Employee. and override OnModelCreating method and call maptostoredprocedure function.
+		3. Create the EmployeeRepositoryClass which have EmployeeDBContext object and create the insert, update and delete method.
+		4. Create webform and add gridview, details view, objectdatasource.
+	    5. We can override the stored procedure name and its parameter like this:
+		   protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>().MapToStoredProcedures(p => p.Insert(i => i.HasName("InsertEmployee")
+             .Parameter(n => n.ID, ("EmployeeId"))
+             .Parameter(n => n.Name, "EmployeeName")
+             .Parameter(n => n.Salary, "EmployeeSalary"))
+            .Update(u => u.HasName("UpdateEmployees")));
+            base.OnModelCreating(modelBuilder);
+        }
+6. Entity Splitting - IF two tables have same field like Employee table has EmployeeId and EmployeeContactDetails has EmployeeId
+                      then we can show these two table combine and also update, insert, delete can be perform on them using the single table.
+
+        1. By Generated from database(schema approach)
+		         1. Create tables.
+				 2. Add Ado.net entity model and select generated from database
+				 3. Now your both the table will show in the model window. Cut the fields from the second table and paste in first table model and
+				 and delete table from model remember to click on no other wise table will removed from the store.
+				 4. In table mapping select that table employeecontactdetail. 
+				 5. Webform steps will be same - entity, gridview, details view.
+				 
+		2. Using code first approach - in this table will create using code.
+                1. Create Employee Class which has all the properties in it.
+				2. Create employeedbcontext class inherit from DBcontext class and add property 
+                               public DbSet<Employee> Employees { get; set; } 
+                3. Create EmployeeRepository class which has emoployeeDbcontext object, getEmployees method and insert, update, delete method.
+                4. Create webform and add grid view, object data source, details view.
+                5. Once we run program it will create a table employee. to splitt into two table we need to override onmodelcreate object in EmployeeDBContext class:
+                  and define properties in it.
+				  
+7. Table splitting - In this we split a single table to multiple table and to make run fast our application as now it is showing fields which we want and to load other fields whenever we want.
+                    1. By schema approach
+                        1. create application and add entity datamodel
+                        2. then create an another entity and move the columns which we dont want to show to that.
+                        3. create association means join(one to one). then right click the association and add referal integrity.
+                        4. add mapping for second entity(employee contact detail)
+                        5. Add webform and write code to include or not include the fields and bind in grid view.		
+                    2. By code first approach
+                        1. Create employee class, create employeecontactdetail class and create properties 
+                        2. create employeedbcontext class and inherit from dbcontext class and write code in onmodelcreate to map the table.
+                        3. then same step as of schema- webform and write code to include or not include the fields and bind in grid view.	 						
+8. Difference in entity split and table split - in entity split table are actually split in db and in table split it work like view there is only one table.	
+9. Conditional mapping - to add where filter in query.	
+
+          1. Using schema approach - you need to give the mapping through model.
+		  2. using code first - write like this in onmodelcreate function -
+		        modelBuilder.Entity<Employee>().Map(e => e.Requires("Gender").HasValue("Male")).Ignore(e => e.Gender);
+				
+10. Self referencing - like if a employee table has managerid so we need to know which employee has which manager - same like selfjoin
+          1. using schema approach: 
+		        1.we add ado.net model then webform and in code behind in gridview datasource create two properties on the basis of Employee1 which is manager data.
+		  
+		  2. Using code first approach:		
+			    1. We need to write the logic in onmodelcreate function in employeedbcontext class.	
+				
+11. Table Per Hierarchy - if employee can be parmenent and contracted then we use it, in this we make the parent class and child class and both shares data from same table.
+        1.  Schema - create other two entities and add table mapping and condition which tells which employee is permanent and contracted.
+		2. Code first - just make employee class as base class and permanent and contract class inherit from that rest EF will handle. Employeedbcontext class and webform add common it it also.
+
+12. Table per type - In this table are different and we show the data on the basis of selected employeetype.
+        1. schema - remove the foreign key navigation and add inheritance navigation.
+		2. code first - create the emp class as base class and permanent and contract class inherit from it...we need to add the Table attribute and give table name other wise 
+		               it will create only one table. like this [Table("Employees")].
+					   
+		     
+13. Many to many -- like student can have multiple courses and courses can have multiple student.
+       1. Schema - create three table student, course and student courses(in this studentid and courseid will be store)
+	        2. in gridview1.datasource write like this - 
+	          var query = from student in context.Students
+                        from course in student.Courses
+                        select new
+                        {
+                            StudentName = student.StudentName,
+                            CourseName = course.CourseName
+                        };
+            GridView1.DataSource = query.ToList();
+       2. code first - Create course class which have ilist of student and student which have ilist of courses.
+			
+14. Entity for Bridge Table: - here student course has one more field apart from foreign keys that's why entity will create for student course 
+       1.  schema -          GridView1.DataSource = (from student in employeeDBContext.Students
+                                    from studentCourse in student.StudentCourses
+                                    select new
+                                    {
+                                        StudentName = student.StudentName,
+                                        CourseName = studentCourse.Course.CourseName,
+                                        EnrolledDate = studentCourse.EnrolledDate
+                                    }).ToList();
+		2. code first - create three class student, course, StudentCourse							
+  
+ADO.Net - It stands for Microsoft ActiveX Data Objects.
+1. all the classes present in sql.data.sqlclient namespace; which is a dot net data provider.
+
+2. It used to interact with the database.   
+         1. Sql connection - in which we pass the connection string
+		 2. sql command - in which we write select and update query and pass the sqlconnection object.
+		
+		
+            SqlConnection con = new SqlConnection("data source=.; database=Sample3; integrated security=SSPI"); -
+            SqlCommand cmd = new SqlCommand("Select * FROM tblPerson", con);
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            GridView1.DataSource = rdr;
+            GridView1.DataBind();
+            con.Close();
+3.  We need to close the connection always as it takes memory and affect performance.
+4. 	connection should be open as late as possible and close as early as possible.
+5. always give connection string in the web.config file -
+	<connectionStrings>
+		<add name="EmployeeDBContext" connectionString="Database=Sample7;Server=DESKTOP-PRAKASH\SQLEXPRESS2014;User=sa;Password=sa@sa2017" providerName="System.Data.SqlClient"/>
+	</connectionStrings>
+6. USe this connection string in the c# file
+               string CS = ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
+			   
+7. Sql Command:
+       1. ExecuteReader() - when return more than one row.
+	   2. ExecuteNonQuery() - when try to execute the sp or and update query.
+	   3. ExecuteScalar() - when trying to execute query which return only one value.
+	   
+8. Sql injection - 
+        1. run delete command from the ui like by put delete from tbpperson.
+        2. so never concatenated the text user enter from the ui and make dynamic query.
+        3. to Solve this problem we need to pass the value of text in the parameter using paramerized query.
+		
+9. to call stored procedure - we need to pass the sqlcommand.CommandType = System.Data.CommandType.StoredProcedure;
+		1. we can pass the output parameter to the sp using this code
+		        SqlParameter outputParameter = new SqlParameter();
+                outputParameter.ParameterName = "@PersonId";
+                outputParameter.SqlDbType = System.Data.SqlDbType.Int;
+                outputParameter.Direction = System.Data.ParameterDirection.Output;
+                sql.Parameters.Add(outputParameter);
+				
+10. SQL data reader - to read the data from the table.
+                      in this connection needs to be open otherwise we will get the error.
+					  sqldatareader should be close after the task.
+					  we can loop through each record by using the read() method.
+					  
+					  to get the next table data if the queries like this: select * from table1; select * from table2;
+					  then we can use rdr.NextResult() it return true or false
+					  using(SqlDataReader rdr = sql.ExecuteReader())
+					{
+				     GridView1.DataSource = rdr;
+				     GridView1.DataBind();
+				     if (rdr.NextResult())
+				     {
+					GridView2.DataSource = rdr;
+					GridView2.DataBind();
+				    }
+				    }     
+	
+11. Sqldataadapter -
+          it is way to get the data from the database.
+          it doest not need the connection.
+           SqlDataAdapter sqlData = new SqlDataAdapter("SELECT Name, Gender, Email FROM [dbo].[vwPersonList]", sqlConnection);
+                DataSet ds = new DataSet();
+                sqlData.Fill(ds);		
+          In this fill method is responsible to open and close the connection.
+		  
+		  We can run select command, stored procedure, update, delete command using the sqlDataadapter.
+12. DataSet - collection of tables.
+13. Save dataset in cache memory - 
+        Cache["Data"] = (DataSet)ds. -- to add data in cache
+        Cache.Remove("Data") - to remove data from the cache.		
+14. sql command builder - 
+     it generate the update, insert, delete command based on the select statement for the single table.
+     we need to pass the sql data adaptor instance to the sqlcommandbuilder constructor.
+15. update delete using dataadapter and dataset in this we create update command and pass it to adapter.updatecommand properties.	 
+16. RowState - to get the state of the row  like unchanged, modified, deleted
+17.	RejectChanges - if there is any changes in dataset after fill so we can check it by ds.HasChanges() method and if want to get dataset in the orginal form then 
+we can call ds.RejectChanges() method.
+
+18. Strongly type dataset - generated using the schema of the table at the design time.
+19. Load data from xml to dataset - 
+    DataSet ds = new DataSet();
+                ds.ReadXml(Server.MapPath("~/XMLFile1.xml"));
+				
+20. SqlBulkCopy - use to insert data read from sql to the datatable in sql server.
+
+                DataTable dtDept = ds.Tables["Department"];
+				using (SqlBulkCopy bc = new SqlBulkCopy(con))
+                {
+               
+                    bc.DestinationTableName = "Departments";
+                    bc.ColumnMappings.Add("ID", "ID");
+                    bc.ColumnMappings.Add("Name", "Name");
+                    bc.ColumnMappings.Add("Location", "Location");
+                    bc.WriteToServer(dtDept);
+                }
+21. we can copy one table data to another table also using sqlbulkcopy.
+22. also we can process the data in batch using bc.batchsize = 10000;			
+23. Transaction - to provide data integrity - if any query fail then the whole trasaction should be roll back.
+          SqlTransaction tr = con.BeginTransaction();		
+		tr.commit(); if no error other wise tr.rollback();
+		suppose we transfer 10 rs from account a to b so if there is any failure in updating table b then from a the money deduct but not move to b.
+		
+		
+LINQ (Language Integrated Query)
+1. linq enable us to get data from different data source with a similar code like from sql database, xml document.
+2. linq provider - convert linq query to its data source code.
+3.
+            SampleDataContext dataContext = new SampleDataContext();
+            GridView1.DataSource = from student in dataContext.Students
+                                   where student.Gender == "Male"
+                                   select student;
+
+
+            int[] num = { 1, 2, 3, 4 };
+            GridView1.DataSource = from number in num
+                                   select number;
+      -- linq provide compile time error if a wrong name provide in place of gender you use gender1 it will give error.
+								   
+4. ways to write linq queries -
+       1. using lambda expression - 
+	                 IEnumerable<Student1> students = Student1.GetAllStudents().Where(student => student.Gender == "Male"); // using lambda expression
+	    	   
+	   2. using sql like expression - 
+    	            IEnumerable<Student1> student1s = from student in Student1.GetAllStudents() // using sql like expression
+                                              where student.Gender == "Male"
+                                              select student;							   
+5. Aggregate Operator - 
+
+	To find min, max
+	            int[] num = { 3, 1, 2, 8, 5, 6, 7, 4 };
+				          int result = num.Min();
+						  
+				--- to find smallest even number --> int result = num.where(n=> n%2 ==0).min();
+				-- to count all the even number in num array -->          result = num.Where(n => n % 2 == 0).Count();
+				-- to sum all the even number in num array -->          result = num.Where(n => n % 2 == 0).Sum();
+	            string[] countries = { "India", "US" };
+				string countriesCSVLinq = countries.Aggregate((a, b) => $"{a},{b}"); --- make comma separated string using linq.-- It works like reduce function in javascript.
+				
+6. Restriction operator-
+    To filter the elements from the list or array.
+
+	where - it is the restriction operator and it work like filter method in javascript.
+	-- to find the even numbers in the array.
+	> using sql format
+	   IEnumerable<int> res = from number in num  // to get the even numbers using linq sql format
+                                   where number % 2 == 0
+                                   select number;
+            foreach(int num1  in res)
+            {
+                Console.WriteLine(num1);
+            }
+			
+	> using linq lambda expression
+			res = num.Where(n => n % 2 == 0);
+            foreach (int num1 in res)
+            {
+                Console.WriteLine(num1);
+            }	
+				
+		
+		
+	
+7. prejection operators - 
+	
+	> select - work like map function in js.
+			>  var resultNew = num.Select((x, index) => new { Number = x, Index = index });
+	        >   IEnumerable<int> result = Employee.GetAllEmployees().Select(x => x.EmployeeID);
+			>  var result = Employee.GetAllEmployees().Select(x => new { FullName = $"{x.FirstName} {x.LastName}",
+																		Gender = x.Gender, 
+                                                                        MonthlySalary = x.AnnualSalary / 12});
+			
+			   result = from emp in Employee.GetAllEmployees()
+                     select new
+                     {
+                         FullName = $"{emp.FirstName} {emp.LastName}",
+                         Gender = emp.Gender,
+                         MonthlySalary = emp.AnnualSalary / 12
+                     };
+					 
+			
+	selectmany - if we have courses list in the student class then to retrieve subjects selectmany will need.
+				var res = Student.GetAllStudetns().SelectMany(x => x.Subjects);
+	
+				res = from student in Student.GetAllStudetns()
+					  from subject in student.Subjects
+						select subject;
+	
+	> Difference between select and selectmany
+		
+	
+8. Distinct -
+		to get only distinct value or to remove duplicates.
+		var res = Student.GetAllStudetns().SelectMany(x => x.Subjects).Distinct();
+		
+		
+		
+            res = (from student in Student.GetAllStudetns()
+                  from subject in student.Subjects
+                  select subject).Distinct();
+		
+	
+9. Odering operator - to sort the elements.
+	orderby -- sort element in ascending order
+	 ---
+	 IOrderedEnumerable<Student> students = Student.GetAllStudetns().OrderBy(s=> s.Name);
+	 
+	 
+    students = from student in Student.GetAllStudetns()
+               orderby student.Name
+               select student; 
+	 
+	orderbydescending -- sort element in descending order
+		 IOrderedEnumerable<Student> students = Student.GetAllStudetns().OrderByDescending(s=> s.Name);
+	 
+	 
+		students = from student in Student.GetAllStudetns()
+               orderby student.Name descending
+               select student; 
+	
+	thenby -- to sort like this name asc, age asc;
+	            students = Student.GetAllStudetns().OrderBy(s => s.Name).ThenBy(s=> s.Gender);
+				
+				        students = from student in Student.GetAllStudetns()
+                       orderby student.Name, student.Gender
+                       select student;
+	
+	thenbydescending -  to sort like this name asc, age desc;
+	            students = Student.GetAllStudetns().OrderByDescending(s => s.Name).ThenBy(s=> s.Gender);
+				
+	
+	reverse -- it reverse the elemement in the list.
+	  IEnumerable<Student> studentss = students.Reverse();
+
+10. Partioning operator -
+		1. Take method -
+		if we want to take the part of the element from the given list.
+         > Using lambda expression
+				string[] countries = { "India", "US", "China", "Italy", "UK" };
+			     IEnumerable<string> country = countries.Take(3); give first 3 countries
+				 
+	     > using sql format 
+		       country = (from countryNew in countries
+                      select countryNew).Take(3);
+					  
+		2. Skip operator
+				it skips the part which we want to skip and give rest of the elemement.
+				
+            country = countries.Skip(3); -- it skip first three element and take rest of them.
+            country = (from countryNew in countries
+                       select countryNew).Skip(3);
+					   
+		3. TakeWhile -
+			it take the elemement upto which the condition which pass is satisfied.
+			    country = countries.TakeWhile(c => c.Length > 2);
+				
+		4. Skipwhile -
+				it skips the element upto which the condition is satisfied and give rest of the element -- gives "US", "China", "Italy", "UK"
+	
+11. deferred operator - select, where, take 
+					in this query will execute not where it defined it execute when we use the variable like
+				list<string> country =	from countryNew in countries
+                      select countryNew
+					  
+					 it will not execute here..it will execute when we iterate over country list.
+
+12. Immediate operator - count, min, max, tolist() 
+	here query execute at the same time where we defined it.
+	
+13. conversion operator -
+	tolist() - convert array to list.
+	toarray() - convert list to array.
+	todictonary - covert list to dictonary.
+	tolookup() - it is same like dictonary differnce is that we can insert duplicate key in it.
+				in this suppose there 5 employees in the list in which two are senior developer and 3 are developer. so to group them we can convert it into lookup
+				and the get the employees on the basis of key which is senior developer or developer in this case.
+				
+	cast<>
+		- this gives error when we try to convert "ABC" in the arraylist to the int list.
+		 IEnumerable<int> intlist = list.cast<int>();
+		
+	oftype<> - this ignores the elemement which are of different type.
+			IEnumerable<int> intlist = list.OfType<int>();
+	
+
+	AsEnumerable() - if we write where and order by and try to get the employee then without asenumerable() it run the query with where and order by means  it sort the
+					data and filter the data when query run 
+					
+					but if we add asenumerable() in that query then it first get the data from db and then sort and filter the data from it.
+					
+14. Group by - to group the records.
+	
+	usig lambda expression - 
+						  var employeeGroup = EmployeeNew.GetAllEmployees().GroupBy(x => x.Department);
+						  
+	using sql syntax - 
+			           
+                employeeGroup = from employee in EmployeeNew.GetAllEmployees()
+                                group employee by employee.Department;
+	It have key - which represent the value from which it groupt suppose "IT" in this case.
+	and also have list of records for that key.
+          foreach (var group in employeeGroup)
+            {
+                Console.WriteLine("{0} - {1}", group.Key, group.Count());
+                Console.WriteLine("-----------");
+
+                foreach (var item in group)
+                {
+                    Console.WriteLine(item.Name);
+                }
+            }
+	
+	so we can find the count, max 
+		    foreach (var group in employeeGroup)
+            {
+                Console.WriteLine("{0} - {1}", group.Key, group.Count());
+            }
+			
+			    foreach (var group in employeeGroup)
+            {
+                Console.WriteLine("{0} - {1}", group.Key, group.Max(x=> x.Salary));
+            }
+	
+	> group by on multiple keys --       
+		using lambda -	var employeeGroupByDeptAndGender = EmployeeNew.GetAllEmployees().GroupBy(x => new { x.Department, x.Gender });
+		using sql syntax - 
+	   employeeGroupByDeptAndGender = from employee in EmployeeNew.GetAllEmployees()
+                                group employee by new {employee.Department, employee.gender};
+
+15. Element operator:
+		
+		> First operator - gives the first element.
+		            int[] num = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+					int result = num.First(); -- gives 1.
+					
+					int result = num.First(x=> x % 2 == 0); -- with predicate -- this gives 2.
+					
+					> if the array is empty then it throw an exception invalid operation. sequence has no element.
+		
+		> single operator -  return single element.
+					int[] num = { 1 };
+					int result = num.Single(); -- gives 1.
+					int[] num = { 1, 2 }; int result = num.Single(); - gives error as it is giving more than one element.
+					int[] num = {  };int result = num.Single(); - gives error as there is no element in it.
+					int[] num = { 1, 2, 3 }; 
+					int result = num.Single(x=> x % 2 == 0); -- gives 2
+					
+		> defaultifEmpty - it return the default value if there is no element.
+						> int[] num = {2, 3, 4}	
+					     var defaultValue = num.DefaultIfEmpty(); - gives 2, 3, 4
+						> int[] num = {};
+					     var defaultValue = num.DefaultIfEmpty(); - gives 0
+						 
+16. Group join - First group the collection and then join between the two list.
+
+			> using lambda expression =>    var employeesByDepartment = Department.GetAllDepartments()
+                                        .GroupJoin(EmployeeGroup.GetAllEmployees(),
+                                                    d => d.ID,
+                                                    e => e.DepartmentID,
+                                                    (department, employees) => new
+                                                    {
+                                                        Department = department,
+                                                        Employees = employees
+                                                    });
+													
+			> using sql syntax
+								
+            employeesByDepartment = from department in Department.GetAllDepartments()
+                                    join emp in EmployeeGroup.GetAllEmployees()
+                                    on department.ID equals emp.DepartmentID into eGroup
+                                    select new
+                                    {
+                                        Department = department,
+                                        Employees = eGroup
+                                    };
+17. Inner Join - find the matching rows between the two collection
+				> using lambd =>				var result = EmployeeGroup.GetAllEmployees().Join(Department.GetAllDepartments(),
+                                                              e => e.DepartmentID,
+                                                              d => d.ID,
+                                                              (emp, department) => new
+                                                              {
+                                                                  EmployeeName = emp.Name,
+                                                                  DepartmentName = department.Name
+                                                              });
+				> using sql 
+					 result = from e in EmployeeGroup.GetAllEmployees()
+                     join d in Department.GetAllDepartments()
+                     on e.DepartmentID equals d.ID 
+                     select new
+                     {
+                         EmployeeName = e.Name,
+                         DepartmentName = d.Name
+                     };
+	
+18. Difference between groupjoin and inner join
+	> syntax difference 
+	    > in sql syntax in group join into is used where in inner join not.
+        > in lambda syntax - groupjoin method used where as in inner join join used.
+		
+	> in group join it group by the department and then give the employee in it.
+	  where as in inner join it give the matching elemement from the collection.
+	  in group join first give department and then give the employees belonging to that department
+	  and in inner join it give a list which have employee and department.
+    
+    > group join give nonmatching record also it is like left outer join and in inner join it gives only 
+      matching elemement.	
+	
+18. Left outer join - matching rows from both the table + non matching rows from the left table.
+		> using lambda --
+			  var result1 = EmployeeGroup.GetAllEmployees()
+                .GroupJoin(Department.GetAllDepartments(),
+                       e => e.DepartmentID, d => d.ID, (emp, depts) => new
+                       {
+                           emp,
+                           depts
+                       }).SelectMany(z => z.depts.DefaultIfEmpty(), (a, b) => new
+                       {
+                           EmployeeName = a.emp.Name,
+                           DepartmentName = b != null ? b.Name : "No Department"
+                       });
+					   
+					   
+	    > using sql syntax -
+						  var result = from emp in EmployeeGroup.GetAllEmployees()
+                         join dept in Department.GetAllDepartments()
+                         on emp.DepartmentID equals dept.ID into eGroup
+                         from d in eGroup.DefaultIfEmpty()
+                         select new
+                         {
+                             EmployeeName = emp.Name,
+                             DepartmentName = d != null ? d.Name : "No Dept"
+                         };
+						 
+20. Cross Join -     
+			> using sql syntax - var result = from dept in Department.GetAllDepartments()
+                         from emp in EmployeeGroup.GetAllEmployees()      
+                         select new { emp, dept };	
+
+			
+			> using lambda  there are two ways 1st by using selectmany and other by using join
+            var result1 = Department.GetAllDepartments().SelectMany(emp => EmployeeGroup.GetAllEmployees(), (dept, emp) => new { dept, emp });
+            var result2 = Department.GetAllDepartments().Join(EmployeeGroup.GetAllEmployees(),
+                                                               dept => true,
+                                                               emp => true,
+                                                               (dept, emp) => new { dept, emp });
+	
+21. Set operators -
+        > distint operator - this gives distinct element.
+		   string[] countries = { "USA", "usa", "INDIA", "UK", "UK" };
+            var result = countries.Distinct();
+			
+			Here it gives USA, usa, india, UK becuase it is case sensitive.
+			
+			result = countries.Distinct(StringComparer.OrdinalIgnoreCase);
+			
+			this will give only one USA.
+			
+			
+			> for the refereces like list of employee distinct doesnot work.
+			
+			so to resolve this there are three ways
+			  > create the employeecomparer  class which inherit from IEqualityComparer pass the EmployeeComparer in distinct method which implement equal and gethashcode method
+			  > override equal, gethashcode in the same class
+			  > use .select and create the anonymous object which have properties of that class.
+			     >  var emps = employees.Select(x=> new {x.ID, x.Name }).Distinct();
+	
+22. Union - it combine two collection and remove the duplicate in both of these.
+			int[] num1 = { 1, 2, 3, 4, 5, 6 };
+            int[] num2 = { 1, 3, 4, 5, 6 };
+           
+     > lamda expression  
+			>  var result1 = num1.Union(num2); this will give 1,2,3,4,5,6.
+			
+23. InterSect - commom elemement between two collection.
+         	var result1 = num1.Intersect(num2); this will give 1,3,4,5,6.	
+
+24. Except - gives the elemement which is only present in first collection and not in second collection
+			      	var result1 = num1.Except(num2); this will give 2
+	
+25. Generator operator - 
+		1. Range method -gives the element from the range you want and upto which range
+		
+		IEnumerable<int> result = Enumerable.Range(1, 10).Where(i => i % 2 == 0);
+		> this will give the even number from 1 to 10.
+		
+		2. Repeat method - gives the given string into number of times you want to print
+		var result = Enumerable.Repeat('hi', 5); this will print hi 5 times.
+		
+		3. Empty method - gives the empty sequence of ienumerable.
+		var result = Enumerable.Empty<int>(); it helps in handling object reference error.
+		
+26. Concat operator:
+    it combine two sequence into one like union but the difference is that it did not remove the duplicates.
+			int[] num1 = { 1, 2, 3};
+            int[] num2 = { 1, 3 };
+			var result1 = num1.Concat(num2); this will give 1,2,3,1,3.
+			
+27. SequenceEqual - is used to check whether the two sequence are equal or not.
+					
+			string[] countries1 =  { "USA", "UK", "India"};
+			string[] countries2 = { "USA", "UK", "India" };
+
+			var resul1t = countries1.SequenceEqual(countries2);
+			Console.WriteLine(resul1t);
+			
+			
+28. Quantifiers - 
+		int[] numbers = { 1, 2, 3, 4, 5 , 11};
+		1. All - check all the element satisfying the condition or not. if satisfied then returns true otherwise false.
+			
+			var result1 = numbers.All(x => x < 10); - it return false
+				
+		2. Any - check whether a element is satisfied or not if yes then true otherwise false.
+			var result1 = numbers.Any(x => x < 10); - it return true.
+			
+		3. contains - check where the element present in it or not 
+		
+			var result1 = numbers.Contains(2); - gives true.
+
+LINQ TO XML -- todo
+			
+LINQ TO Sql -- todo

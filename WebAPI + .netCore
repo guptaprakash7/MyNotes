@@ -1,0 +1,586 @@
+
+
+Asp.net web API -
+
+1. api stands for application programming interface.
+2. It is .net framework which is used to create restful api
+3. restful api - here rest is a architecture which have some constraints.
+4. constraints of restful api
+       1. client server - here client request to the server and server response to the client.
+	   2. stateless - which means no information saved of client on the server and every request treats as a independent request.
+	   3. cacheable - to improve the performance.
+	   4. uniform interface - which have resource like /employee/1
+	                          and verb like get, put, post, delete.
+							  
+		5. layered system
+		6. code on demand.
+		
+5.new> project> asp.net web application > web api
+6. post - create, get - read, put - update, delete - delete\
+7. Request header - which have additional information like content-type etc.
+8. Request body - here we send the data to the server
+9. Response body - have the response data sent by the server.		
+10. Content negotiation - to decide the response in json or in xml form
+        > by default it is in json form.
+        > to change it we need to use - Accept: application/xml
+        > to format the json and to use the camelcase in the key like 'firstName'
+           [{
+			"id": 1,
+			"name": "Prakash",
+			"gender": "Male",
+			"salary": 1600000,
+			"deptId": 1
+			}]
+		we need to use - config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+						 config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+		
+		otherwise it will show like this - [{"Id":1,"Name":"Prakash","Gender":"Male","Salary":1600000,"DeptId":1}]
+		
+11. mediatypeformatter - to send the response in the json or in xml form this class is responsible for that.
+    > to get the response always in the json format - config.Formatters.Remove(config.Formatters.XmlFormatter); 
+	> to get the response always in the xml format - config.Formatters.Remove(config.Formatters.jsonformatter);
+	> if request is from  browser then get the response in json form using this code:
+	    config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
+		
+12. GetRequest - to get the data from the server - 
+    > http://localhost:50449/api/employees - it returns all the list of the employees
+    > http://localhost:50449/api/employees/1 - it returns the employee with id = 1.
+   	> also we need to send the correct status code like 200 if it works, 404 if record not found.
+	public HttpResponseMessage Get(int id)
+		{
+			using (SampleEntities entities = new SampleEntities())
+			{
+				var entity = entities.Employees.FirstOrDefault(i => i.Id == id);
+				if (entity != null)
+				{
+					return Request.CreateResponse(HttpStatusCode.OK, entity);
+				}
+				else
+				{
+					return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Employee with id {id} not found");
+				}
+			}
+		}
+
+13. Post request - to post the data to the server which we can processed and save in database.
+      > we can post the request using fiddler or postman 
+      > we need to send the content-type: application/json to tell we are sending data in json format.
+      > {"Id":4,"Name":"Sachin","Gender":"Male","Salary":1600000,"DeptId":1} - this is the data pass in the body.
+      > http://localhost:50449/api/employees and change to post.
+      > also we need the response code 201(which means item created) if it work fine as per the rest standards.
+     public HttpResponseMessage Post([FromBody] Employee employee)
+		{
+			try
+			{
+				using (SampleEntities entities = new SampleEntities())
+				{
+					entities.Employees.Add(employee);
+					entities.SaveChanges();
+
+					var message = Request.CreateResponse(HttpStatusCode.Created, employee);
+					message.Headers.Location = new Uri(Request.RequestUri + employee.Id.ToString());
+					return message;
+				}
+			}
+			catch(Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
+		}	  
+		
+14. Delete request - to delete the record.
+	    
+		public HttpResponseMessage Delete(int id)
+		{
+			try
+			{
+				using(SampleEntities entities = new SampleEntities())
+				{
+					var entity = entities.Employees.FirstOrDefault(emp => emp.Id == id);
+					if(entity == null)
+					{
+						return Request.CreateResponse(HttpStatusCode.NotFound, $"Employee with Id {id} not found.");
+					}
+					else
+					{
+						entities.Employees.Remove(entity);
+						entities.SaveChanges();
+						return Request.CreateResponse(HttpStatusCode.OK);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
+		}
+		
+15. put request - to update the existing record.
+        public HttpResponseMessage Put(int id, Employee emp)
+		{
+			try
+			{
+				using (SampleEntities entities = new SampleEntities())
+				{
+					var entity = entities.Employees.FirstOrDefault(emp1 => emp1.Id == id);
+
+					if(entity != null)
+					{
+						entity.Name = emp.Name;
+						entity.Gender = emp.Gender;
+						entity.Salary = emp.Salary;
+						entity.DeptId = emp.DeptId;
+
+						entities.SaveChanges();
+						return Request.CreateResponse(HttpStatusCode.OK, entity);
+					}
+					else
+					{
+						return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Employee with id {id} not found.");
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
+		}
+
+16. Custom method - to call the http verb method with some different name we have to write the [HttpGet] attribute to the method.
+             > for eg we have to call LoadAllEmployees method when we run get request then write [HttpGet] in above of it.
+			 [HttpGet]
+			 public HttpResponseMessage LoadAllEmployees(string gender = "all"){
+			 }
+17. Query String - to pass the value from the url 
+          > http://localhost:50449/api/employees?gender=male 
+        we can get this value from the parameter in function.
+		[HttpGet]
+	     public HttpResponseMessage LoadAllEmployees(string gender = "all"){
+	     }
+		 
+18. Cross domain - if the domain is different and we request to our webapi then due to error no allow for cross origin it gives the error.
+  In this response come from the server but due to browser security it shows us this error.
+                   http://localhost:62333/Employees.html
+                   http://localhost:50449/Employees.html				   
+	so if the domain with other port request to other port then it gives the error to solve this problem we have 2 ways.
+	
+	> 1st by using jsonp  - in this we have to install the package - install-package webapicontrib.formatting.jsonp
+	  and from webappconfig.cs return the json formatter using this code:
+	   	var jsonpFormatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
+		config.Formatters.Insert(0, jsonpFormatter);
+		and in ajax set the datatype to jsonp.
+	
+    > for 2nd way  - first need to install the package using this link - install-package Microsoft.AspNet.WebApi.Cors	
+	     > then 1st way we can allow the access to all the controllers by writing the code in webapiconfig file.
+		 //EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*"); -- here 1st parameter is orgin - means domain, 2nd is header, 3rd is methods get,put,delete etc
+			//config.EnableCors(cors);
+		 > 2nd if we want to give access to only particular controller then we can use the attribute
+		  	> [EnableCorsAttribute("*", "*", "*")]
+			> config.EnableCors(); in the webapiconfig file.
+	also we can disable the access to particular method using this attribute - 	[DisableCors]
+
+	> 3rd way by using this code in web.config file but this is not flexible like 2nd method.
+		<system.webServer>
+			 <httpProtocol>
+			  <customHeaders>
+				<add name="Access-Control-Allow-Origin" value="your-origine" />
+				<add name="Access-Control-Allow-Methods" value="GET, POST" />
+			  </customHeaders>
+			</httpProtocol>
+		 </system.webServer>	
+	
+	> to run the request using fiddler call like this for 1st method. - http://localhost:50449/api/Employees?callback=abc or add Accept:Application/json.
+
+19. Enable SSL - press f4 > Enabled SSL > True.
+
+20. we can redirect to the https like this in a class which inherit from AuthorizationFilterAttribute  and write override of OnAuthorization method.
+                actionContext.Response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Found);
+				actionContext.Request.Content = new StringContent("<p>use https instead of http");
+
+				UriBuilder uri = new UriBuilder(actionContext.Request.RequestUri);
+				uri.Scheme = Uri.UriSchemeHttps;
+				uri.Port = 44396;
+
+				actionContext.Response.Headers.Location = uri.Uri;
+
+        then pass this as a filter in the webapiconfig file like this config.Filters.Add(new HttpsRequireAttribute());
+		> here HttpsRequireAttribute is the class which inherit from AuthorizationFilterAttribute
+
+21. Enable basic authentication:
+	> Create the employeeSecurity class  which have login method:
+		public static bool Login(string userName, string passWord)
+		{
+			using (SampleEntities entities = new SampleEntities())
+			{
+				return entities.Users.Any(user => user.Username.Equals(userName, StringComparison.OrdinalIgnoreCase) && user.Password == passWord);
+			}
+		}
+		
+    > then create a class Name BasicAuthenticationAttribute which inherit from AuthorizationFilterAttribute and then override the onauthorization method
+        public override void OnAuthorization(HttpActionContext actionContext)
+		{
+			if (actionContext.Request.Headers.Authorization == null)
+			{
+				actionContext.Response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+			}
+			else
+			{
+				string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
+				string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
+				string[] userNamePassArr = decodedAuthenticationToken.Split(':');
+				string userName = userNamePassArr[0];
+				string passWord = userNamePassArr[1];
+
+				if(EmployeeSecurity.Login(userName, passWord))
+				{
+					Thread.CurrentPrincipal = new GenericPrincipal(
+										  new GenericIdentity(userName), null);
+				}
+				else
+				{
+					actionContext.Response = actionContext.Request.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+				}
+
+			}
+		}
+		
+		> We can register this class in webapiconfig.cs like this config.Filters.Add(new BasicAuthenticationAttribute());
+		> in fiddler pass the Authorization: Basic bWFsZTptYWxl -- this is male:male username:password in the encoded form.
+		
+		
+22. web token based authentication
+    > account controller in webapi able to handle the new user add. we need to pass email, password, confirmpassword it will handle it.		
+	> now if we need to access the controller to get the data we first need to get the token using this url which gives us the token
+	> then in next request we need to pass that token in Authorization header.
+	>http://localhost:57965/token  then pass the request body -username=prakash.gupta@gmail.com&password=gauripeehu123$A&grant_type=password
+	> now in next request pass the token get - http://localhost:57965/api/employee
+	> Authorization: bearer WCDU8uYRFWkpY6EJtwWWN30MpAWXEr6_kxZQAj25v_8wYrKF_Czj-RDMBkVSOMD0KhMy7b5iPJ2qtnN8Bt4WA09bY92iWHGt2XtNfycuowZzhw2Q2taJeR47hIAdBZ3h6P4KhS2KfD6fkuNjeMBKfW6LKRUqYCFdjbjjUtJVqzTdeSkCFAr4a6A21_sypaNrYDtzhSw5reiXUJONJ3lhuVOADtFah60pZZ-Mq5e6OdX2XQO5ovzBEYcEP9yE_3XHraJoM_PCQ_ly0oFIwggk8tCeRgK3mDCKtCnseDrCUONakdiL44ERT22jfCRQLHZyVBx3NLUWCFBqyOwyNBnHCTVPl7lf4NUjp9bpVjnHevWKPaVfyyPPrgrLl2p8u0D05VnCHO6FNEygluYaW2Y-7TUvXf66CB6SOwlWNLYhjVXRRnvaztyCeHqZ5oA1q_hQf81aOcKJC4nfuR9d_q6kBk6tFx7HmSOmluqf_uu4HgO6yiCUAxORC_LI_tilb2G1
+    > to store the accesstoken in browser storage - 	sessionStorage.setItem("accessToken", response.access_token);
+	> to get the data of the employee we need to pass this bearer token like that
+	  > 
+		$.ajax({
+			url: "/api/Employee",
+			method: "Get",
+			headers: {
+				'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+			},
+			success: function (data) {
+				errorLabel.innerHTML = data;
+			},
+			error: function (jqXHR) {
+				errorLabel.innerHTML = jqXHR.responseText;
+			}
+		})
+		
+	  > to implement logout you just need to remove the accesstoken from the sessionStorage and redirect to the loginPage.	
+	  > to retrieve the username from which we logged in on js side - we can get it from response.userName at the time of login
+	  > to retrieve the username at c# side 
+	         > User.Identity.Name OR RequestContext.Principal.Identity.Name
+	
+23. Attribute routing - enables to execute more method which have same signature for eg get(int id) or getcourses(int id)	
+            > it already enable in webapi2
+			> 	[Route("api/student/{id}/courses")] -- use this on the funtion you want to specify attribute routing
+			
+24. Route Constraints-  if two get methods one have int and other have string parameter then we can add constraints to define their routs
+	> [Route("api/student/{id:int}")] here we can also add more constraints like min and max - 	[Route("api/student/{id:int:min(1)}")]		
+	>[Route("api/student/{name:alpha}")]
+	
+	
+25. Route prefix - This is use to write the common route at the controller level 
+   > 	[RoutePrefix("api/student")] if we write this before controller then in the routes we don't need to add api/student
+         just add any route like this 	[Route("{id:int}")]   
+		 and [Route("{id}/courses")]
+		 
+   > suppose if we need to overwrite the routeprefix so we can add the ~ symbol before the uri > [Route("~/api/StudentCourses/{id}/courses")]
+	
+26. Generate route links - means when the post request done then we want to see the object which created then we can send it to a location
+   > 1st way - 
+	Simply by request.requestURI + ID.tostring()
+		public HttpResponseMessage AddStudent(Student student)
+		{
+			students.Add(student);
+			var response = Request.CreateResponse(HttpStatusCode.Created);
+			response.Headers.Location = new Uri(Request.RequestUri + student.Id.ToString());
+			return response;
+		}
+		
+		But here the issues can be suppose if user doesn't add the "/" to the url then it will not give correct uri - it give like this
+		> http://localhost:50449/api/student/104
+		
+		So the best way to do this is:
+		
+		> 2nd way - using route name
+		
+		> write this before the method from which it returning the desired location like get method in this case
+				[Route("{id:int}", Name ="GetStudentById")]
+				
+		
+		 > then write this route name where we are sending location.
+		 
+			public HttpResponseMessage AddStudent(Student student)
+		{
+			students.Add(student);
+			var response = Request.CreateResponse(HttpStatusCode.Created);
+			response.Headers.Location = new Uri(Url.Link("GetStudentById", new {id= student.Id }));
+			return response;
+		}
+27. IHttpActionResult - this is used to send the response like httpresponsemessage but in a better way. It was introduced in webapi2.
+    	
+		public IHttpActionResult GetStudent(int id)
+		{
+			Student student = students.FirstOrDefault(x => x.Id == id);
+			if(student == null)
+			{
+				return Content(HttpStatusCode.NotFound, "Student not found.");
+			}
+			return Ok(student);
+
+		}
+		
+      > here we can return response like OK('any message'); which looks better.
+
+28. Versioning - suppose there are two clients using the same api and other wants to change in it so to control this versioning is come into picture
+    
+	> versioning from uri - in this we can create url like this api/v1/student and api/v2/student
+           and change in wepapiconfig file - 		
+		   config.Routes.MapHttpRoute(
+				name: "version2",
+				routeTemplate: "api/v2/student/{id}",
+				defaults: new { id = RouteParameter.Optional, controller = "StudentV2" }
+			);
+
+
+Asp.net core 
+
+1. Latest version is .net 7.
+2. Cross platform and can be hosted on iis, apache, docker.
+3. Common controllers for mvc and web api.
+4. Differences technical wise with .net framework
+       1. in asp.net core you can directly edit csproj file by right click and edit csproj file.
+	   2. files and references no longer attach to csproj file it is directly save in the main folder.
+5. Implicit usings in csproj file. To centralize the common usings in one file.
+6. TFM - Target Framework moniker - it is the abbreviation like netcoreapp3.1 so TFM of .net 3 is netcoreapp3.1
+7. Metapackage - Like Microsoft.AspNetCore.App which has no content of its own it has list of dependencies in it.
+8. CreateDefaultBuilder() method -
+     1. load configuration
+	 2. setting up the web server.
+	 3. configuring logging.
+9. InProcessHosting - CreateDefaultBuilder - method calls useiis method and host the application inside the iisworker process - w3wp.exe or iisexpress.exe
+10 to get the process name  we can use this - System.Diagnostics.Process.GetCurrentProcess().ProcessName.
+11. outprocess-  in this there are two servers are there - internal and external
+             1. internal server - kesteral server is used as internal server and the process name is dotnet.exe
+			          use to run the application cross platform
+				      when we run the dotnet application using the .net cli then the kesteral server runs.
+					  
+		     2. external server - like iis, apache,
+12. launchsetting,json file - it has configuration used in local development environment.
+13. to use the config values we need to inject IConfiguration service in the startup class
+		private IConfiguration _config;
+		public Startup(IConfiguration config) => _config = config;   
+    if a setting have same name as in appsetting.json and in appsetting.development.json then development.json file key value will get.
+	after that user secret key > environment variables in launchsetting.json > command line argument ...settings uses in which file in this order.
+14. Middleware component - 
+        1. has access of both request and response.
+        2. may simply pass the request to the next middleware
+        3. may process the request and then pass to the next middleware.
+        4. may process the outgoing response.
+        5. may handle the request and short circuit the pipeline -
+        6. they execute in the order they added.
+        7.  		
+15. Terminal middleware - it terminate the request and not pass to the next middleware and send send response.
+16. app.use to add middleware and in this we have to pass context and next parameter 
+    	app.Use(async (context, next) =>
+			{
+				await context.Response.WriteAsync("M1");
+				await next();
+			});
+			
+17.in our case First request coming to middleware1 then using next() method pass to 2nd middleware and finally process in the m3 middleware 
+   and then passes the response to the m2 and then to m1.
+   
+18. All the static files should be in wwwroot folder in the main project folder which is employeemanagementcore in our case
+19. To use the static file we have to add the middleware app.UseStaticFiles();
+20. to move to the default.html page have middleware 		app.UseDefaultFiles(); it should be before app.UseStaticFiles();
+21. we can also load any other default file by add the DefaultFileOptions middleware
+       DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+			defaultFilesOptions.DefaultFileNames.Clear();
+			defaultFilesOptions.DefaultFileNames.Add("foo.html");
+			app.UseDefaultFiles(defaultFilesOptions);
+22.usefileserver() middleware have the functionionality of both usedefaultfiles() and usestaticfiles() middleware and we can replace them with it.
+		FileServerOptions fileServerOptions = new FileServerOptions();
+			fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
+			fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
+
+			app.UseFileServer(fileServerOptions);
+23.developer exception page middleware - it should be place in starting and use to debug the issue.
+24. use launchsettings.json 
+   "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+to set the environment for the development and for staging and for production use the operating system environment variables.
+and by default production environment set to the application.
+
+25. MVC - model view controller - it works on the user interface layer.
+   model - which has classes to represent the data and logic to manage the data
+   view - contains the display logic to represent the model data provided to it by the controller.
+   controller - handles the http request, work with the model and selects view to render that model.
+26. setup steps for mvc -
+    1. add service for mvc in configureservice method 
+        services.AddMVC()
+    
+    2. add middleware of mvc in Configure method
+       app.UseMvcDefualtRoutes();	
+    Here it will request to the homecontroller and index actionContext
+	
+	public class HomeController : Controller
+	{
+		public string Index()
+		{
+			return "Hello from MVC";
+		}
+	}
+
+to return json data from mvc controller we need to inherit it from the Contollers base class.
+	public class HomeController : Controller
+	{
+		public JsonResult Index()
+		{
+			return Json(new { id = 1, name = "prakash" });
+		}
+	}
+	
+27. AddMVC() methods provides all services like AddJsonFormatter() and AddMVCCore() service add only the services using in mvc.
+
+28. Dependency injection - 
+    In this we create the interface and the class which implement it so if we have to use the instance of that class then we need to inject it through the constructor
+	 of the class. like this suppose we have employee class.
+	 	public class Employee
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+
+		public string Email { get; set; }
+
+		public string Department { get; set; }
+
+	}
+	
+	> and a interface - 
+		public interface IEmployeeRepository
+	{
+		Employee GetEmployee(int id);
+	}
+	
+	> a class which implement that class 
+	
+		public class MockEmployeeRepository : IEmployeeRepository
+	{
+		private List<Employee> _employeeList;
+
+		public MockEmployeeRepository()
+		{
+			_employeeList = new List<Employee>()
+			{
+				new Employee() {Id = 1, Name = "Prakash", Email = "prakash.gupta@gmail.com", Department = "IT"},
+				new Employee() {Id = 2, Name = "Prakash", Email = "prakash.gupta@gmail.com", Department = "IT"},
+				new Employee() {Id = 3, Name = "Prakash", Email = "prakash.gupta@gmail.com", Department = "IT"}
+			};
+		}
+
+		public Employee GetEmployee(int id)
+		{
+			return _employeeList.FirstOrDefault(x => x.Id == id);
+		}
+	}
+
+	and we are want to use that in our homecontroller
+		private IEmployeeRepository _employeeRepository;
+
+		public HomeController(IEmployeeRepository employeeRepository)
+		{
+			_employeeRepository = employeeRepository;
+		}
+		
+		here it means it will create the instance of the  MockEmployeeRepository and assign it to _employeeRepository
+		
+		public HomeController()
+		{
+			_employeeRepository = new MockEmployeeRepository();
+		}
+       
+	   the above two code are same but the difference is that in first it provide loose coupling and in second it provide tight coupling
+	   suppose we change the implementation of the IEmployeeRepository into some other class then in second case we have to change the every places where we are using it
+	   but with help of dependency injection we can inject the instance of the class with the help of interface
+	   
+	   to do that we need to add the service in the configure service method like this
+	   	
+		services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>(); so if we want to change the class we can change it only at the single place.
+		
+		
+29. If we want to use content negotiation like accept headers then we can use objectresult return type
+	    public ObjectResult Details()
+		{
+			Employee model = _employeeRepository.GetEmployee(1);
+			return new ObjectResult(model);
+		}		
+30. view - you have to give data type viewresult
+         and all views will be placed in the folder same name as controller name like home in our case
+		 also we have to add razor view which is a cshtml file which has same name like the action name
+		 Details.cshtml in our case.
+		 
+		 public ViewResult DetailsNew()
+		{
+			Employee model = _employeeRepository.GetEmployee(1);
+			return View(model);
+		}
+		
+		
+		We can also change the name of the folder and cshtml file if we want and can pass that name using absolute path and relative path 
+		
+			return View("../../MyViews/Test", model); // relative path in which no extension need
+			return View("MyViews/Test.cshtml", model); // absolute path in which extension need
+31.		 
+		 
+       
+.net and react course udemy -
+1. dotnet --info > gives the info about the .net sdks installed on the system.
+2. dotnet -h > gives the command we can use.
+3. dotnet new -l > gives the template list like mvc/webapi etc.
+4. dotnet new sln - to create sln file.
+5. dotnet new webapi -n API > create webapi project.
+6. dotnet new classlib -n Application > for create new class library.
+7. dotnet sln add API > to add the project to sln file.
+8. dotnet sln list > to see the projects present in sln file.
+9. dotnet add reference ../Domain > this is used to add reference in a project here we add REFERENCE of Domain in Application project.
+10. dotnet run - to run the project
+11. dotnet watch run - whenever we make any change it will automatically build the project.
+12. In .net 5 we inject the configuration in startup class and these details comes from appsetting.json.
+13. Entity framework migration - to create db on the basis of code
+14. Need dotnet ef tool for this if using CLI - dotnet tool install --global dotnet-ef --version 6.0.9
+15. To add migration - dotnet ef migrations  add InitialCreate -p Persistence -s API
+16. Add this code in program.cs in .net 5 for add migration in entity framework.
+public static void Main(string[] args)
+        {
+           var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    var context = services.GetRequiredService<DataContext>();
+                    context.Database.Migrate();            
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred during migration");
+                }
+            }
+            host.Run();
+        }
+
+17. >sqllite open database  -- run this in visual studio code 
+18. sqllite explorer - you need to install it from extension.

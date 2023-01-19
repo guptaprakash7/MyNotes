@@ -1,0 +1,1052 @@
+
+	 
+SQL Server:
+1. Sql server management studio is not the server it is the tool
+2. CREATE DATABASE <name> for create database
+3. Drop database <name> to drop the db
+4. Two files created after create database .mdf which have actual data and .ldf to recover db
+5. Change database name:
+     > 1st way by this query - ALTER Database Sampe1 MODIFY NAME = Sample3
+	 > 2nd way by system sp - EXEC sp_renamedb 'Sample3', 'Sample4'
+6. Dropping the database - drop database [Sample4]
+7. if multiple user working on the db and you want to set it to single user --ALTER DATABASE sample2 SET Single_User with Rollback immediate
+CREATE TABLE tblPerson(
+PersonId INT NOT NULL PRIMARY KEY,
+Name VARCHAR(50),
+GenderId INT,
+Email VARCHAR(100),
+Age INT
+)
+
+
+CREATE TABLE tblGender(
+GenderId INT NOT NULL PRIMARY KEY,
+Gender VARCHAR(10)
+)
+
+insert into tblGender(GenderId, Gender)
+VALUES(2, 'Female')
+insert into tblPerson(Age, GenderId, Name)
+VALUES(15, 2, 'Sunita')
+8. Foreign Key is used for relation between the two table -	 ALTER TABLE tblPerson ADD CONSTRAINT tblPerson_GenderId_FK
+FOREIGN KEY (GenderId) REFERENCES tblGender(ID) --- helps in database integrity no faltu value can be entered in it
+9. Default Constraints - to provide default value to the nullable column
+ALTER TABLE tblPerson
+ADD Constraint DF_tblPerson_GenderId
+DEFAULT 3 FOR GenderId
+10. Cascade referal integrity: if any foreign key record delete like in gender table female record we try to delete we cannot because of foreign key
+ so in this case we create the default constraint in the person table on genderid and then set that default constraints when we try to delete the gender table record
+     > set defualt to set default value
+	 > Set null - set null value
+	 > cascade - will delete the record from the person table also when delete the gender table record due to foreign key
+11. to get the information about the table select the table name and press alt + f1
+12. Check Constraints - add check like age cannot be less than 0 and greater than 150 
+
+ALTER TABLE tblPerson
+Add Constraint CK_tblPerson_Age CHECK
+(Age < 0 AND Age > 150)
+
+13. Identity column to give the value to the primary key in the table 
+14. SET Identity_Insert tablename on to explicitly insert the value in identity column
+15. DBCC - Database consistency check.
+16. Reset the identity column - DBCC CHECKIDENT('tblperson', RESEED, 0)
+17. Ways to retrieve the last inserted identity value
+    > SELECT SCOPE_IDENTITY() - from the same session and same scope
+	> SELECT @@Identity - from same session and any scope
+	> SELECT IDENT_CURRENT('test1') - from any session and any scope
+18 Unique key constraints: 
+    >ALTER TABLE tblPerson
+	ADD Constraint UQ_tblPerson_Email
+	UNIQUE(Email)
+19. select - 
+    > distinct - remove duplicates
+	> wild card -- '_@_.com' this retrive one character before and after @
+	               > '%@%' to validate email.
+	               > '[MST]%' - retrieve name start from mst
+				   > '[^MST]%' - retrieve name start not from mst
+    > select top 50 percent from table name - retrive the half record from the table
+20. [first name] - to put the gap between the name of column
+21. Where clasue filter records before group by where as having clause filter records after group by 
+22. cannot use aggregate funtion like sum, max and min in the where clause whereas in having we can
+23. Where can be use in select, insert and update where as having only with select
+24. Joins             10, 4
+        > inner join - matching rows from both the tables - 8
+		> outer join 
+		   > right outer join - matching rows from the table including the non matching rows from the right table - 10
+		   > left outer join  matching rows from the table including the non matching rows from the left table - 9
+		   > full outer join matching and non matching both the records from both the tables - 11
+		> cross join - gives the cartesian product. 40
+		> self join - no syntax change only difference is join on same table 
+		    > self left join
+			> self inner join
+			> self cross join
+			
+25. Coalesce function - give the first non null value
+         1. also different ways to replace null is isnull method and case when.
+26. Union - get the rows from the both the table but not duplicate records and Union all - all rows from both the table including the duplicate
+28. union - is slow as compared to union all as it remove the duplicate which take some time, 
+29. union combine two or more table while join combine columns on the basis of a relationship
+30. StoredProcedure - without parameter
+CREATE PROCEDURE spGetPerson
+AS
+BEGIN
+	SELECT * FROM tblPerson
+
+END
+31. sp with parameter
+CREATE PROC spGetPersonByAge
+@Age INT
+AS
+BEGIN
+  SELECT * FROM tblPerson WHERE Age = @Age
+END
+32. Add 'WITH Encryption' before as in the sp to not execute the sp_helptext command 
+33. Sp with output parameter:
+CREATE PROC spGetPersonEmail
+@Age INT,
+@Email VARCHAR(30) OUTPUT
+AS
+BEGIN
+  SELECT @Email = Email FROM tblPerson WHERE Age = @Age
+END
+
+--execute 
+DECLARE @Email VARCHAR(30)
+EXEC spGetPersonEmail 21, @Email out
+print @Email
+34. some useful system sp
+     > sp_help spname - to get the info about the sp
+	 > sp_helptext spname - to get the text of the sp
+	 > sp_depends - to get the dependency of the sp
+	 
+35. sp with return value - it return only integer value
+ ALTER PROC spGetPersonEmailUsingReturnValues
+@Age INT
+AS
+BEGIN
+  RETURN(SELECT count(id) FROM tblPerson WHERE Age = @Age)
+END
+
+-- exec 
+DECLARE @Email VARCHAR(30)
+EXEC @Email = spGetPersonEmailUsingReturnValues 21
+print @Email
+
+36. difference between return and output
+   > only interger whereas any datatype
+   > return only one value  where as multiple value
+   > use in success or failure generally where as in output to return multiple value use 
+37. Usage of sp -
+    > reuse execution plan and reuse code
+	> reduce network traffic
+38. Some useful string functions:
+    > LTRIM To remove the white spaces from left - SELECT LEFT('ABC', 1)
+	> RTRIM - to remove the white spaces from right - SELECT RIGHT('ABC', 1)
+	> Charindex - to get the index of particular letter. - SELECT CHARINDEX('A', 'ABCDE')
+	> Substring - to get the substring 0 SELECT SUBSTRING('ABCDE', 2, 3)
+	> patindex - same as charindex difference is we can use wildcard in it - SELECT PATINDEX('%@gmail.com', 'sachin@gmail.com'). Output - 7
+	> Replace - Replace the character with given character.- SELECT REPLACE('Sachin@gmail.com', '.com', '.net')
+	> Stuff - replace the character on the basis of specified length. SELECT STUFF('Sachin@gmail.com', 14, 5, 'net') 
+	> Replicate - to show the given character or string the times you want to show. SELECT REPLICATE('*' , 5)
+	                output - *****
+	>SPACE - to add space between two letter. SELECT 'Rajat' + SPACE(5) + 'Agrawal' 	output - Rajat  Agrawal
+ 	
+					
+39. DateTime
+       Datatypes> Time
+	            > date
+				> smalldatetime
+				> DateTime
+				> datetime2 - return more digit in nano second
+				> datetimeoffset - to store offset also with time
+				
+		Some useful functions:
+           1. IsDate() - To check the valid date, time. - return 0 for false and 1 for true. it give 0 in case of datetime2 and datetimeoffset datatype due to large value of seconds.
+           2. DAY(GETDATE()) - get day from the date. - date should be in mm/dd/yyyy and in yyyy/mm/dd format. --SELECT day('9/2/21') - output - 2 , SELECT day('2021/2/21')
+		   3. Month(date) - get month of the date - SELECT Month('9/2/21') - output - 9
+40. Datename function return the string of year, month -- select DATENAME(dw, getdate()) -- sunday
+41. Datepart is same as datename but it return integer value - select datepart(dw, getdate()) - 1
+    DateAdd - to add day in the date -- select DATEADD(DAY, 1, GETDATE())
+	DateDiff - gives the differnce of month or day from the two dates - select Datediff(DAY, GETDATE(), DATEAdd(Day, 3, GETDATE()))
+42. Cast funtion to convert into any datatype -- SELECT CAST(GETDATE() AS varchar(30)) --output - Sep  3 2021  9:48PM
+43. convert funtion also same but it also has 3rd parameter which is use for styling the date -- SELECT CONVERT(VARCHAR(20), GETDATE(), 111) - output - 2021/09/03
+44. Mathematical functions:
+      Abs return the absolute positive nunber, Cieling return greatest number, floor return the smallest number (select FLOOR(15.3) output - 15 in case of ceilling- 16)
+
+	  power(2, 3) - returns 8, Square(2) - return 4, SQRT(81) - return 9(square root), RAND() - return random number between 0 to 1 and if we pass seed value to this function it will give same number every time between 0 to 1.
+	  Round(856.556, 2) - return 856.560 here 2 is length
+	  select ROUND(856.556, 1, 1)  - gives 856.500 which means upto 1 and and second 1 is for truncate after that. by default the third parameter is 0.
+45. Scalar funtion:
+CREATE FUNCTION CalculateAge(@DOB DATE)
+RETURNS INT
+AS 
+BEGIN
+ RETURN 1
+END
+
+--execute
+SELECT dbo.CalculateAge('11/02/2012')
+ 
+46. inline table value funtion: - we can apply where filter on function and also join when executing the function
+    Here we cannot specifying the table structure.
+
+CREATE FUNCTION fn_GetPerson()
+RETURNS TABLE
+AS 
+ RETURN( SELECT Email FROM tblPerson)
+ 
+--execute
+SELECT * FROM  dbo.fn_GetPerson()
+
+SELECT tblGender.Gender, K.Name FROM  dbo.GetPerson(30) K
+left outer join tblGender on K.GenderId = tblGender.GenderId
+
+
+update  dbo.GetPerson(30) SET Name = 'Munni' 
+
+SELECT * FROM  dbo.GetPerson(30) WHERE Name = 'Sunitas'
+
+46.1 inline return table where as scalar return any datatype
+46.2 inline doesnot have begin and end where in scalar it has.
+
+				
+47. Multi statement table value function - in this we can return table whose structure we can define.
+
+CREATE FUNCTION fn_MSTVF_GetPerson()
+RETURNS @Table TABLE(Id INT, Email VARCHAR(50))
+AS 
+BEGIN
+ INSERT INTO @Table
+ SELECT Id, Email FROM tblPerson
+ Return
+END
+
+EXECution--
+SELECT * FROM dbo.fn_MSTVF_GetPerson()
+
+DBO - it is database owner.
+
+48. Differences between itvf and mstvf
+    > in itvf no table structure in returns 
+    > itvf does not have begin and end
+	> Inline table value function gives better performance than multi statement table valued function
+    > update possible on the itvf 
+49. Deterministic funtion are those whose value can be determined or not change by multiple execution eg count(1), and all aggregate function
+    > non deterministic function value change in every execution eg getdate()
+50. RAND() - gives value between 0 to 1 can be both determined and non deterministic if seed value pass then it return the same value 
+51. With Schemabinding in function use to not delete the objects of the funtion like table.
+52. Temporary table: - these are created in the temp db -- select name From tempdb..sysobjects where name like '%#Person%'
+     Types- > local temporary table
+	             > # use to create table and only available for the same session
+			> Global temporary table
+			    > ## use this to create 
+53. Indexes - Help to find data in the table quickly -- create index IX_tblPerson_Email ON tblPerson (Email ASC)
+      > Scan each row is called table scan which is bad for performance
+	  > scan the records on the basis of index is index seek
+	  > sp_helpindex tblperson - to know the indexes on the table
+54. Clustered index determine how the data stored in the table like primary is the clustered indexe you can enter the record in the non sequential order but
+    when you select the record it will come in the sort  on the basis of primary key which done by clustered index
+55. clustered index on multiple column is known as the composite index 
+56. There is only one clustered index on the table can be create by default clustered index create on the primary key
+57. non clustered index - create a separate data from the actual data and more than one non clustered index in the table
+58. Unique and non unique indexes these are not different indexes actually these are the properties of the clustered and non clustered indexes
+59. there is no mazor difference between unique constraint and unique index - when we create unique constraint it create the unique non clustered indexe also
+--CREATE UNIQUE NONCLUSTERED INDEX IX_TblGender_Gender ON tblGender(Gender)
+
+60. disadvantages of indexes: 
+     > extra disk spaces
+	 > update and delete become slow as indexes also need to update 
+	 > Covering query - like index create on salary and we selecting all the records on the basis of salary then it look back into the main table and which take time
+	                   > Where as composite index reduce this problem 
+61. view:
+      > view is a virtual table
+	  > saved sql query
+	  > we can update, insert, delete record also from view with single underlined base table, also unique indexes did not work when we insert record
+	  > when we try to update the multiple underlined base table view we use trigger in this case
+62. Indexed views:
+     > when we create the index on the view know as indexed view in sql server and materialized view in oracle and these can be able to store the data in them
+     > rules for indexed views:
+          > should contain with schemabinding, no null value, group by should have count_Big(*), two part refrences in the table
+     > we should create the index on the view where data not update frequently
+ 
+ view benefit:
+     1. provides security.
+     2. we can give limited access to user.	 
+	
+ view limitations:
+     1. you cannot pass parameter to the views. 
+	 2. we can use inline table valued function which work as the paramerized view.
+	 3. order by can also not be use here unless top is not used.
+	 4. view cannot be create of temporary tables
+ 
+63. Triggers:
+     types:
+         > DML - Data manipulation language - these fired when dml events occur(insert update and delete)
+		     Again have two type:
+     		  > After Trigger
+			  > Instead of trigger
+		 >DDL Triggers
+		 >LOGON Trigger
+64 For Delete Trigger - deleted present in the deleted table
+CREATE TRIGGER tr_tblPerson_ForDelete
+ON tblPerson
+FOR DELETE
+AS
+BEGIN
+	DECLARE @Id INT
+	SELECT @Id = Id FROM deleted
+	
+	INSERT INTO Test1
+	VALUES('Id Deleted ' + CAST(@Id AS nvarchar(20)))
+
+END
+65. For insert trigger - inserted row present in the inserted table
+CREATE TRIGGER tr_tblPerson_ForInsert
+ON tblPerson
+FOR Insert
+AS 
+BEGIN
+	DECLARE @Id INT
+	SELECT @Id = Id FROM inserted
+	
+	INSERT INTO dbo.Test1
+	VALUES('Id Inserted ' + CAST(@Id AS nvarchar(20)))
+END
+
+66. For update trigger
+    > deleted table have the old value
+	> inserted table have the new value
+CREATE TRIGGER tr_tblPerson_ForUpdate
+ON tblPerson
+FOR UPDATE
+AS
+BEGIN
+
+	SELECT * FROM deleted
+	
+	SELECT * FROM inserted
+END
+
+67. Instead of insert trigger - 
+     > as we can not insert the data from the view due to the multiple base table so we create the instead of trigger on it 
+	 Syntax 
+	 CREATE TRIGGER tr_TriggerName
+	 ON viewname
+	 INSTEAD OF INSERT
+	 AS 
+	 BEGIN
+	 END
+68. Instead of update trigger
+   > if we update the view which is based on multiple base table then we get the error
+   > Or if we update a single base table but it will update the lookup display value instead of id in the main table
+   > to overcome this issue we have to use the instead of update trigger
+   
+   Eg:
+   
+   select * From tblPerson
+select * from tblGender
+update tblGender set Gender = 'Unknown' where ID = 3
+select * From vwPersonDetailList
+update vwPersonDetailList set Gender = 'Male' WHERE Id = 1
+
+    ALTER TRIGGER tr_vwPersonDetailList_InsteadOfUpdate
+ON vwPersonDetailList
+INSTEAD OF UPDATE
+AS
+BEGIN
+	DECLARE @GenderId INT = 0
+
+	IF(UPDATE(Gender))
+	BEGIN
+		SELECT @GenderId = tblGender.ID
+		FROM tblGender
+		JOIN inserted ON inserted.Gender = tblGender.Gender
+	
+	IF @GenderId IS NULL
+	BEGIN
+		RAISERROR('Gender is not valid', 16, 1)
+		return
+	END
+
+	UPDATE tblPerson SET GenderId = @GenderId 
+	from inserted
+	JOIN tblPerson ON tblPerson.id = inserted.id
+
+	END
+
+END
+
+69. Instead of delete trigger:
+
+70. Temp table and table variable both create in the tempdb
+
+71. Table variable: - its scope is within the statement where it is executing.
+DECLARE @PersonDetails TABle(Name varchar(20), Gender varchar(20), Id INT)
+
+INSERT @PersonDetails
+SELECT 
+	dbo.tblPerson.Name, tblGender.Gender, dbo.tblPerson.ID
+FROM 
+	dbo.tblPerson 
+JOIN
+	dbo.tblGender ON dbo.tblGender.ID = tblPerson.GenderId
+
+SELECT * FROM @PersonDetails
+
+72. Temporary table:
+
+SELECT 
+	dbo.tblPerson.Name, tblGender.Gender, dbo.tblPerson.ID
+INTO #Temp1
+FROM 
+	dbo.tblPerson 
+JOIN
+	dbo.tblGender ON dbo.tblGender.ID = tblPerson.GenderId
+
+SELECT * FROM #Temp1
+
+
+73. Derived TABLE:
+
+
+SELECT Name, Gender, ID 
+FROM
+(
+SELECT 
+	dbo.tblPerson.Name, tblGender.Gender, dbo.tblPerson.ID
+FROM 
+	dbo.tblPerson 
+JOIN
+	dbo.tblGender ON dbo.tblGender.ID = tblPerson.GenderId
+)
+AS PersonDetails
+
+74. Common table Expression(CTE):
+WITH PersonDetails
+AS
+(
+SELECT 
+	dbo.tblPerson.Name, tblGender.Gender, dbo.tblPerson.ID
+FROM 
+	dbo.tblPerson 
+JOIN
+	dbo.tblGender ON dbo.tblGender.ID = tblPerson.GenderId
+)
+
+SELECT * FROM PersonDetails
+
+75. We can update the cte with one base table. We can update the cte with multiple base table but in update command there should be update on one base table
+76. Data normalization:
+    > to reduce the data redundancy(duplicate).
+	     > disadvantages of data redundancy:
+		          > Disk storage issue
+				  > data inconsistency
+				  > dml queries becomes slow
+		 > for eg if we have a employee table where 1 lac record have same dept and dept head so if we dept head change we need to update all the 1 lac record
+		 > so to reduce this problem we separate the dept head table and assign the id to the main table so if head change we need to update only 1 record
+		 
+	> 1st normal form:
+	   > Data should be atomic not in csv like a,b,c
+	   > data should not have repeat column group Like employee1, employee2
+	   > identity each record uniquely in the table
+	> 2nd normal form:
+	   > 1st normal form
+	   > no redundant data 
+	   > make foreign key to a relationship between them
+	> 3rd normal form:
+	   > should be in 1nf and 2nf
+	   > doesnot contain the column which does not fully dependent on the primary key. Like annual salary which is computed column
+77. Pivot element:
+
+     > Create the column from the table data
+	 
+    eg:
+	select name, 1, 2
+FROM tblPerson
+Pivot
+(
+sum(age)
+FOR GenderID IN([1],[2])
+)
+AS pivottable
+
+
+select * From tblPerson
+
+With CTE
+AS(
+select Gender, SUM(Salary) AS TotalSalary from tblEmployee group by Gender
+) 
+
+SELECT Male, Female from CTE PIVOT(
+SUM(TotalSalary)
+FOR Gender IN (Male, Female)
+) AS PivotTable
+
+78. Raise error:
+     Through custom errors 
+	    > Raiserror('', 16, 1)
+		
+79. @@Error in sql 2000 - it return 0 or 1 on the basis of error --1 is if there is error 0 if there is no error and should use immediately after the query or should
+insert the error value in a variable to check if there it is any error or not
+	IF @@ERROR <> 0
+	BEGIN
+	ROLLBACK TRAN
+	END
+	ELSE
+	BEGIN 
+    Commit Tran	
+	END
+	
+80. Error Handling can be done by two ways:
+
+   > using @@Error and begin tran and commit tran
+   > using Try and Catch - in 2005 and later version.
+	BEGIN TRY
+     { Any set of SQL statements }
+	END TRY
+	BEGIN CATCH
+		 [ Optional: Any set of SQL statements ]
+	END CATCH
+81. Transaction:
+      > BEGIN Transaction
+	  > process commands
+	  > IF NO ERROR COMMIT OTHER WISE Rollback
+
+82. SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+     > To see the changes which was done in other window otherwise query will excecuting and did not stop if the commit transaction does not happen in the other transaction.
+	 
+83. ACID Test - 
+     > ATOMIC - either done or not done. Should not be half done
+     > Consistent - should be update the data in consistent way
+     > ISOLATED - other trancation should not be interfare between the transaction
+     > DURABLE	 - power failure or system failure in this case if any running trancation should be rollback once power up.
+	 
+84. Correlated subquery - 
+        > When inner query is dependent on the outer query and we cannot run it independently	 
+
+85. Cursor - If need to update row by row.
+             very bad in performance and need to be avoid.
+	 
+
+	DECLARE @PersonId INT = 0
+
+	DECLARE PersonCursor CURSOR FOR
+	SELECT PersonId FROM tblPerson
+
+	OPEN PersonCursor
+	FETCH NEXT FROM PersonCursor INTO @PersonId
+
+	WHILE(@@FETCH_STATUS = 0)
+	BEGIN
+
+	Select 'aa'
+
+	FETCH NEXT FROM PersonCursor INTO @PersonId
+	END
+
+	CLOSE PersonCursor
+	DEALLOCATE PersonCursor
+
+ use always joins in place of cursor.
+
+86. some useful queries
+
+    select * From sys.objects -- to get all the objects present in the database
+	select * From sys.tables -- to get all the tables present in the database.
+	select * From INFORMATION_SCHEMA.TABLES -  to get all the tables and view in the database.
+	
+	
+87. select OBJECT_ID('tblperson') - to check table present in the database or not.	
+	 
+88. Alter Table tblperson alter column Gender int.
+
+89. Optional parameter in stored procedure -
+	create proc getPerson
+	@Name VARCHAR(50) = NULL
+	AS 
+	Begin
+	SELECT * FROM tblperson
+	END
+
+	EXEC getPerson -- will not give any error of expect parameter.
+
+90. Merge Statement to run update delete and insert from a source table to the target table
+
+	MERGE StudentTarget AS T
+	USING StudentSource AS S
+	ON T.ID = S.ID
+
+	WHEN MATCHED THEN
+	UPDATE SET T.Name = S.Name
+	WHEN NOT MATCHED BY TARGET THEN 
+	INSERT(ID, Name) VALUES(S.Id, S.Name);
+		
+91. Concurrent transaction:
+	different transaction run at the same time. 
+	
+
+	Isolation levels - 
+	1. Read committed -  read only committed data. this is bydefault level.
+	2. Read uncommitted - read uncommitted data.
+	3. Repeatable read - if read happen again then it will give same result.
+	4. seriablizable read - fix both non repeatable read and phantom read problem. - there is less concurrency transaction as it locks the resources.
+	5. snapshot Isolation level - this uses versioning. and provide the concurrent transaction and also this solve the non repeatable and phantom read problem.
+								if tran 1 update the noofitems to 5 from 10 then in second trans if we read the value until trans 1 complete it give 10.
+								and
+								if in second trancation we try to update the value to 8 until 1st trans complete it give the error.
+								
+							
+			
+	Dirty Read - suppose if a trancation 1 is updating table and it is taking time and it failed after 15 sec. meanwhile transaction 2 read the data from the same table
+	             but if we run trancation 2 it block until committ or rollback. so we change the isolation level to read uncommitted and it read the updated data which is dirty read.
+			1. read uncommitted isolation level only gives dirty data.
+            2. with nolock also we can read uncommitted data.
+	
+	lost update problem - when transaction 1 update table and trancation 2 also updting the same table and tran 2 done earlier than tran 1.
+	                  suppose trancation 1 first get noofitems and subtract 1 from it and wait for 10 sec and meanwhile trancation 2 select the noofitems and substract by 2 so it change to 80
+					  and in transaction 1 the value was 10 then it update it to 9. when it should be 7.
+					  
+					  so in read committed and read uncommitted this lost update problem is there.
+					  and if the isolation level set to repeatable read then it give deadlock error.
+					  
+	
+	Non repeatable read - suppose we in tran 1 first read the noofitems from inventory table and after delay for 10 sec we again read the same data and 
+							meanwhile tran 2 update the noofitems to 5 so in second read of trancation 1 it not give the same data in read committed and read uncommitted isolation.
+                           
+						   but if we use repeatable read isolation level then it first complete the tran 1 then in trans 2 update will happen.
+						 
+        
+	Phantom read problem - when trans 1 read the employee between 1 to 3 and then delay for 10 sec and then again read the same rows in between trans 2 insert a new row
+                           and in trans 1 second time read that row also come in result then it is a phantom read.
+
+                      to solve this seriablizable isolation level should be set.						   
+
+
+92. DeadLock - 
+			
+	if process A updating tableA in tran 1 and process B updating tableB in transaction 2 and then in trancation 1 processA updating the tableB which is lock by trancation 2/21
+	And in tran 2 process B updating Table A which is lock by Tran 1 then it comes to a deadlock situation.
+	
+	then sql server choose a deadlock lock victim and in that transaction we get a deadlock error and that transaction get roll back.
+	
+	> DeadLock priority - it chooses which transaction to be as a victim.
+	We can set the deadlock priority to low, normal, high and by default is normal and if both the transaction have the same deadlock priority then
+	on the basis of which transaction is less expensive to roll back sql server choose victim.
+	
+	SET DeadLock_Priority High
+	
+	> To log the deadlock -
+	
+	DBCC Traceon(1222, -1) -- here -1 indicates the global level.
+
+	To check the status of the trace flag
+	DBCC TraceStatus(1222, -1)
+
+	To turn off the trace flag
+	DBCC Traceoff(1222, -1)
+	
+	
+	and to read the error logs - execute sp_readerrorlog
+
+93. blocking query - if a transaction block due to the other trancation running on the same record. 
+	we can get the list of blocking queries with the help of kudvenkat query using link -- http://www.sqlskills.com/blogs/paul/script-open-transactions-with-text-and-plans/		
+	and kill the blocking query using activity monitor. -- after kill the transaction is roll back.
+	
+	
+94. Except Operator -
+	1. it returns the record from first table which are not in second table.
+	
+		Select Id, Name, Gender
+		From TableAA
+		Except
+		Select Id, Name, Gender
+		From TableBB
+	
+95. Difference between except and not in
+	1. excepts filters the duplicates where as not in not filter the duplicate.
+	2. except operator - number of column should be same in both the query where as in not in it compare only single field.
+	
+	
+96. Intersect operator - same like inner join give common record from the two table.
+	select ID, Name, Gender from TableAA
+	INTERSECT
+	select Id, Name, Gender FROM TableBB
+	
+97. difference between intersect and inner join
+	1. inner join not filter out the duplicate record whereas intersect does.
+	2. we not get the null row in inner join whereas in intersect it get.
+	
+98. CROSS Apply - if want to join between physical table and a table valued function 
+				this works like inner join
+				SELECT 
+				DepartmentName, Name, Gender
+				FROM Department
+				CROSS APPLY fn_getEmployeeByDepartmentId(Department.Id)
+
+99. Outer apply - if want to join between physical table and a table valued function 
+                  it works like left outer join
+					SELECT 
+					DepartmentName, Name, Gender
+					FROM Department
+					OUTER APPLY fn_getEmployeeByDepartmentId(Department.Id)
+					
+100. DDL - Data definition language. For example - alter, drop, create 
+101. DDL Trigger - these fired when any ddl event occur.
+	CREATE TRIGGER tr_DDLTriggerOnCreateTable
+	ON DATABASE
+	FOR Create_Table, Alter_Table, Drop_Table
+	AS 
+	BEGIN
+	   PRINT 'New Table Created'
+	END
+
+	> if we want to create ddl trigger which will apply to on all database in the server then in place of "Database" we have to use "ALL server".
+      It create in server objects folder.	
+	  
+	> Server scope trigger execute before the database scope trigger. 
+    > also we can set the order of the database triggers using settriggerorder sp to execute first or last if there are more than one database scope triggers.
+
+102. logon Triggers - that fires when any login happen in sql server. - it can be use to limit user or tracking the login activity.
+
+CREATE Trigger tr_auditLogin
+ON all server
+FOR LOGON
+AS
+BEGIN
+DECLARE @LoginName NVARCHAR(100)
+
+SET @LoginName = ORIGINAL_LOGIN()
+
+IF (
+SELECT COUNT(*) 
+FROM  sys.dm_exec_sessions 
+WHERE is_user_process = 1 AND original_login_name = @LoginName) > 5
+
+BEGIN
+PRINT 'due to trigger execution'
+ROLLBACK
+END
+
+END
+
+
+103. Select INTO - this is used to create the copy of the table. 
+> select * into dbo.EmployeesBackup FROM Employees
+> Here EmployeesBackup table should not be present in the data base as it create the new table when we run this query.
+> also we can create the backup table in other database also by giving the fully qualified name for eg.
+          select * into Sample2.dbo.EmployeesBackup FROM Employees -- here Employees is in sample db and employeesbackup will create in sample1 db
+
+> if we need to backup the data in existing table then we can use - insert into dbo.employeesbackup 
+                                                                    select * From employee
+																	
+104. Table valued parameter - these are the user defined types which we can pass into the stored procedure as a table. these are readonly.
+     > first we need to create the user defined table type like this which is of similar structure like table. 
+	 CREATE TYPE [EmployeesType] AS TABLE (
+	[Id] [int] NOT NULL,
+	[Name] [nvarchar](100) NULL,
+	[Gender] [nvarchar](10) NULL,
+	[Salary] [int] NULL,
+	[DeptId] [int] NULL
+	)
+    
+	> then we need to create the sp and pass this table type variable in the stored procedure as parameter.
+		CREATE PROC [dbo].[sp_InsertIntoEmployees]
+		@EmpTableVar [EmployeesType] READONLY
+		AS
+		BEGIN
+			INSERT INTO Employees
+			SELECT * FROM @EmpTableVar
+
+		END
+	
+	> how to use it:
+			  DECLARE @EmpTableVar [EmployeesType]
+		INSERT INTO @EmpTableVar VALUES(1, 'Prakash', 'Male', 1600000, 1)
+		INSERT INTO @EmpTableVar VALUES(2, 'Johan', 'Male', 1000000, 1)
+		INSERT INTO @EmpTableVar VALUES(3, 'Rajan', 'Male', 850000, 1)
+
+		EXEC [sp_InsertIntoEmployees] @EmpTableVar
+	
+	> we can call it from ado.net code like this -- 
+			SqlParameter parameter = new SqlParameter()
+			{
+				ParameterName = "@EmpTableVar",
+				Value = GetEmployeeData()
+			};
+      Here value takes the datatable and parametername takes the name of the parameter
+	  
+105. Grouping sets - to apply group on different columns in the same query
+    > for eg. SELECT Country, Gender, SUM(Salary) FROM EmployeesGroupingSet
+				GROUP BY Country, Gender
+				UNION ALL
+				SELECT Country, NULL, SUM(Salary) FROM EmployeesGroupingSet
+				GROUP BY Country
+				UNION ALL
+				SELECT NULL, Gender, SUM(Salary) FROM EmployeesGroupingSet
+				GROUP BY Gender
+				UNION ALL
+				SELECT NULL, NULL, SUM(Salary) FROM EmployeesGroupingSet
+          Here we  first grouping on the basis of country, gender then country then gender and final total
+		  
+		  This is not good as per performance point of view as query runs on same table four times.
+		  
+		  SELECT Country, Gender, SUM(Salary) FROM EmployeesGroupingSet
+			GROUP BY
+			  GROUPING SETS
+			  ( 
+				(Country, Gender),
+				(Country),
+				(Gender),
+				()
+			  )
+			ORDER BY GROUPING(Country), GROUPING(Gender), Gender
+		
+		so we can wrtie same query using grouping set in which grouping on different column in same query.
+
+106. Rollup - to get the total on the basis of particular column with the grand total in this case we can use rollup.	  
+	  1. first way to write rollup
+	  select Country, SUM(Salary) AS TotalSalary From EmployeesGroupingSet
+      group by ROLLUP(Country)
+      
+     2. 2nd way to write roll up.      
+	  select Country, SUM(Salary) AS TotalSalary From EmployeesGroupingSet
+      group by (Country) WITH ROLLUP
+	  In this case we first grouping on the basis of country and then grand total.
+	  
+	  > select Country,Gender ,  SUM(Salary) AS TotalSalary From EmployeesGroupingSet
+        group by ROLLUP(Country, Gender)
+	  in this case we are grouping on the basis of country, gender then get the total on the basis of country and then grand total.
+	  
+	  > we can also achieve the above result using the union all and grouping sets but the easiest way is using rollup.
+	  
+	  > changing second query into union and in grouping set.
+	    -- using grouping set
+		select Country,Gender ,  SUM(Salary) AS TotalSalary From EmployeesGroupingSet
+			group by Grouping sets
+			(
+			(country, gender), -- grouping on the basis of country and gender
+			(country), -- grouping on the basis of country
+			() -- grand total
+			)
+
+          > using union	  
+			select country, gender, sum(salary) from EmployeesGroupingSet
+			group by country, Gender
+			union all 
+			select country, null , sum(salary) from EmployeesGroupingSet
+			group by country
+			union all 
+			select null, null , sum(salary) from EmployeesGroupingSet
+
+107. Cube - to get the possible combination of the result of group on particular columns then we use group for eg. if we want to group
+            first on the basis of country, gender and then country and then by gender and then grand total in this case we use the cube.
+			> select Country,Gender ,  SUM(Salary) AS TotalSalary From EmployeesGroupingSet
+             group by Cube( country, gender)
+            > point 105 queries are the other way to get the same result using union and grouping set.
+
+108. Grouping function - which tells on the particular column in rollup, cube or grouping set the grouping apply or not if grouping apply then it return 
+                         1 else 0.
+						 
+						 SELECT Continent, Country, City, SUM(SaleAmount) AS TotalSales,
+							GROUPING(Continent) AS GP_Continent,
+							GROUPING(Country) AS GP_Country,
+							GROUPING(City) AS GP_City
+							FROM Sales
+							GROUP BY ROLLUP(Continent, Country, City)
+109. grouping id - this is used to convert the binary to decimal and add them and show if group appply on all continent, country, city 
+                    then it show 7. we can sort and filter the data on the basis of this groupingid
+
+110. Conditional breakpoint in debbuging - in this we can set the value of variable to somevalue by right click select condition in loop instead of
+                                            loop over every time.
+
+111. Over clause - if we want the average, min, max along with the field which are not in group by then we have to use over.
+        
+		> without using over clause we can write query like this:
+		 Select Name, EmployeesGroupingSet.Gender, Salary, GenderTotal, AvgSalary, MaxSalary, MinSalary from EmployeesGroupingSet
+			INNER JOIN (
+			select Gender, count(1) AS GenderTotal, AVG(Salary) AvgSalary, MAX(Salary) MaxSalary, MIN(Salary) MinSalary
+			from EmployeesGroupingSet
+			Group by Gender
+			) Genders
+			ON Genders.Gender = EmployeesGroupingSet.Gender
+ 
+		> query with the use of over clause
+		Select Name, EmployeesGroupingSet.Gender, Salary,
+		COUNT(Gender) Over(partition by Gender) Gender,
+		AVG(Salary) Over(Partition by Gender) AvgSalary,
+		MAX(Salary) Over(Partition by Gender) MaxSalary,
+		MIN(Salary) Over(Partition by Gender) MaxSalary
+		from EmployeesGroupingSet
+
+112. RowNumber() - this is used to sort the data by the field and give the row number 
+select *, ROW_NUMBER() Over(Order by Gender) From EmployeesGroupingSet
+here we can also add partition by to partition the result in group
+> select *, ROW_NUMBER() Over(Partition by Gender Order by Gender) From EmployeesGroupingSet
+
+113. Rank and dense_rank - to find out the nth highest records we can use these functions
+   > in rank if it is a tie between to then the next number start from the 3 like 1, 1, 3
+   > in dense_rank if the above scenerio create then the it give resul1t like 1, 1, 2
+WITH Result AS
+(
+select *, Dense_Rank() Over(Order by Salary desc) AS SalaryRank
+From EmployeesGroupingSet
+)
+SELECT * FROM Result where SalaryRank = 2
+
+114. calculate running total - which means to add the values in the ascending in descending order 
+                               like this field += field. 1000 + 2000 + 3000 
+							>   select *, SUM(Salary) OVER(Order by Id) AS RunningTotal From EmployeesGroupingSet
+
+115. NTILE Function - if we want to break the data into group then we can use it if there are 10 rows in the table then if we use ntile(2) then 
+                      it will divide the data into group of 5.
+      select *, NTILE(2) OVER(Order by Id) AS [NTILE] From EmployeesGroupingSet
+
+116. Lead and lag function - lead - it give the next field data of the current row
+                             lag - gives the previous field data of the current row.
+                            syntax - lead(column, offset, defualtvalue) Over (Order by col1, col2...) 							 
+                                     > here offset tell the number of the row looking into from the current row
+									 > defaultvalue - gives the defualtvalue if there is no next and previous row.
+									 > both are optional.
+							Query > select *, LEAD(Salary, 1, -1) OVER(Order by Salary) AS Lead,
+									Lag(Salary, 1, -1) OVER (Order By Salary) AS Lag
+									From EmployeesGroupingSet 
+
+117. First_value function - it gives the first value for the particular column from the table on the basis of any field.
+		select *, First_Value(Name) OVER(Order by salary)
+		From EmployeesGroupingSet 
+      Here it gives the name of the employess whose salary is lowest.
+	  
+118. One more parameter in the over clause is rows - 
+
+SELECT Name, Gender, Salary, 
+    AVG(Salary) OVER(ORDER BY Salary ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS Average
+FROM Employees
+> here it means that move from the 1st row and to the last row in the table.
+> default value of this is Range unbound preceding and current row
+> here difference between range and rows is range treated duplicate value as a single while rows treated it as different
+
+119. Last_Value function - to give the last value of a field on the basis of particular sort but here we have to pass explicitly rows and range because it
+                          takes the default value of it.
+ select *, Last_Value(name) over(order by id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) From EmployeesGroupingSet 
+
+120. Unpivot - it change the column in to rows.
+                select SalesAgent, Country, Sales
+				From tblProductSales
+				UNPIVOT 
+				(
+				   Sales
+				   FOR Country IN (INDIA, US, UK)
+				) UnPivotResult
+    
+121. Choose function - it gives the particular value from the array 
+                         select choose(1, 'dd', 'ss') -- it will give dd.
+						 
+122. iif function - this is the replacement of case statement.
+       > select IIF(1=2, 'Male', 'Female') Gender --- here it will give female.
+	   
+123. Try_Parse - to convert one data type to another. it is like cast method but the only difference is if the conversion failed then it return null instead of error.
+                 > if we convert the alphanumeric to int using cast then it through an error 
+				 > select CAST('abc1' AS INT) as a --- Conversion failed when converting the varchar value 'abc1' to data type int.
+                 > where as if we use the try_parse it will return the null.
+                 > select Try_Parse('abc1' AS INT) as a -- return null
+				 > Try_Cast('abc' AS INT) can also be used.
+				 
+124. Try_Convert - to convert the datatype to another data type. it is same like convert except it return null when it fails to convert.
+                  > select CONVERT(int, 'abc1') AS A - Conversion failed when converting the varchar value 'abc1' to data type int.
+                  > select TRY_CONVERT(int, 'abc1') AS A -- return null.
+   				 
+125. Difference between Try_Convert and Try_Parse
+ 1. in try_convert there is no need of .net clr for run it while in try_parse it use .net clr to execute it.
+ 2. in try_convert we can also convert to other type like xml while in try_parse it give error "Invalid data type xml in function TRY_PARSE"
+ 
+126. EOMonth() - to get the last date of the month
+     > select EOMONTH(getutcdate())
+
+125 - Datefromparts - Datefromparts(year, month, day) - then it will return the date.
+      
+	 > select DATEFROMPARTS(2015, 2, 2) ---2015-02-02 will give this.
+	 
+126. datetime2fromparts 
+   > syntax - DATETIME2FROMPARTS ( year, month, day, hour, minute, seconds, fractions, precision )
+   > SELECT DATETIME2FROMPARTS ( 2015, 11, 15, 20, 55, 55, 0, 0 ) AS [DateTime2] -- 2015-11-15 20:55:55
+   
+127. TIMEFROMPARTS - TIMEFROMPARTS ( hour, minute, seconds, fractions, precision )
+     > select TIMEFROMPARTS(20, 55, 55, 0, 0) -- 20:55:55
+   
+128. Offset - this is used in paging.
+syntax - select * From tablename
+         order by columnname
+		 offset number_of_rows_skip rows
+		 fetch rows_to_fetch rows only
+
+e.g,  select *
+	  From tblproducts
+	  Order by ID
+	  OFFSET 10 ROWS
+	  fetch next 10 row only
+129 - using view dependency we can check the dependency of an object on other objects
+130 - also we can check dependency of an objec using this query
+     --select * From sys.dm_sql_referenced_entities('dbo.vworderlist', 'object') 
+131 - schema bound relationship - here if we try to delete an object then ssms give error.
+132 - sp_depends - to find out the dependent object on a particular table 
+      --sp_depends 'Lookup' -- if we pass table then it will give the sp and views which depend on table  
+	                           and if we pass sp or view name then it will give the table name on which these sp or view depends.
+							   
+    > should use sys.dm_sql_referenced_entities instead of sp_depends because sp_depends gives incorrect result sometimes.
+133. Sequence object in sql - it uses to generate a numeric sequence we can use it in place of identity to give the auto incremented value to primary key.
+
+	CREATE SEQUENCE [dbo].[SequenceObject] 
+	AS INT
+	START WITH 1
+	INCREMENT BY 1
+
+	INSERT INTO Employeess VALUES (NEXT VALUE for [dbo].[SequenceObject], 'Ben', 'Male')
+	INSERT INTO Employeess VALUES (NEXT VALUE for [dbo].[SequenceObject], 'Sara', 'Female')
+
+134 - GUID - this is a globlally unique identifier which is of 16 digit.
+           - select newid() gives - A4CE060A-E185-4972-AAE0-E5561F8D19BB  result like this
+		   - suppose if we need to merge two tables into one then we can use this guid as the primary key
+		   - if we need to declare a variable which hold guid we can do like this - DECLARE @ID UniqueIdentifier
+           - disadvantages - its size is 16 bytes whereas int is 4 bytes
+		   - to create empty guid - select CAST(0x0 AS uniqueidentifier) -- 00000000-0000-0000-0000-000000000000
+
+135. Dynamic sql - which built from the string like concatenated strings create a sql query.
+
+         > EXEC sp_executesql is the sp used to execute the dynamic sql.
+		 > in C# we need to use stringbuilder to create query and pass it to sqlcommand object.
+		 
+136. 		 
+		   
+SQL Extra -
+1. sql stands for structured query language it is used to write queries in database to create table, select data from table and so on.
+2. RDBMS - stands for relational database management system. It is a collection of tables which used to store data.
+3. T-SQL - it is like a framework which have extra function like LTRim etc and many other things and it is for ms sql server.
+4. PL/SQL - it is framework used in oracle.
+5. all join can give the same result - if tableA have columnA and have two rows which have 1 in it and tableB have columnB which have three rows having 1 in it.
+   then it work like cartesian product. and give 6 in all joins.
+   
+
+Sql server performance tunining
+
+1. Actual data stored in the last leaf which is known as data page.
+2. Each data page size is of 8 kb and it have around 100 rows in it.
+3. Once we run a select query suppose to get the ordernumber then it first scan each data page and then check on the basis of orderid
+4. So to fix this index comes into picture as it store the data in datapage in sorted by order number and then it search it in main tree.
+5. in execution plan we need to read it from right to left and top to bottom
+6. Also which have high cost % should focus first. Or we can check the first select and check the estimated subtree cost and try to reduce that.
+7. Logical reads - tell how much page need to read by sql server to get the desired result. This should be less.
+8. ways to increase performance
+ > add index
+ > change joins to sub queries or in exists.
+ 
+Some important points related to index:- 
+9. Index scan - in which sql server read all the leaf data horizontally,
+10. Index seek - in which sql server read data in tree structure - top to bottom
+11. Index seek is fast.
+12. column order in also play a important role. So we need to check the where clause and find out the order of the fields and try to create the index accordingly.
+13. if we use sql functions like subtring then we can create a computed column and create index on it so that i can use the index seek otherwise it will use index scan
+14. if we need to select 2 or 3 column then we should include it in the index so that extra lookup scan step can be skip.
+15. should avoid the over indexing need to create index only on the basis of the statements.
+
+--------

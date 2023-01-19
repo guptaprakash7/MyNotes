@@ -1,0 +1,430 @@
+
+
+Dot net:
+
+1. Application > compiler > Convert into intermediate language > Then clr convert il into native code with the help of JIT compiler which is in machine language
+2. When we install the .net on the machine it install .net framework and clr
+3. Compiler convert the program into assemblies which have il and manifest
+4. To show the il and manifest we have tool: ILDASM -   ildasm.exe E:\DCPL\Learn\c#\FirstApp\ConsoleApp1\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+5. To run program or reconstruct the il we had tool - ILASM
+6. GAC - Global assemblies cache
+      > it has all the strong name assemblies in it which we can use in our project.
+	  > we can share the assemblies of gac in other projects without adding them into their bin 
+7. Strong name assemblies:  which have public key token. - C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools>sn.exe -k c:\MyStrongKeys.snk
+    > add -- [assembly: AssemblyKeyFile("C:\\MyStrongKeys.snk")] in assemblyinfo.cs
+	> then run this command - C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools>GacUtil.exe -i E:\DCPL\Learn\c#\FirstApp\ConsoleApp1\ProjectA.TeamA\bin\Debug\ProjectA.TeamA.dll
+	
+8. Weak name assemblies did not check the version changes when run the program
+9. assembly check 
+     > first in the bin if not then in gac and if not then in the same directory and in config file 
+10. Assembly(DLL and .exe) - which have manifest and il 	
+11. DLL Hell problem: If Application A uses c.DLL and Application B also uses c.DLL then if we update the c.DLL and update B application then A application fails
+    so to overcome this issue we convert the c.DLL to strong name assembly as if version not matches for Application A it will check the DLL in GAC.
+12. net run time executes the itermediate language code and gives the output.
+13. csc person.cs /out:personlibrary.dll /target:library - to generate dll.
+14. to generate exe file - csc person.cs program.cs /out:hello.exe /target:exe
+
+C#:
+
+c# latest version is 9.0, now its 10.
+What's new in C# 10
+1. Initialization and declaration in same deconstruction.
+
+whats new in 9.0
+ > init in properties 
+    > this is used to initialize the property at one time only
+ > top level statement: which means no main method in console application
+ > record: it is like a class.
+      > basically are used to make immutable properties to mutable and in which a new copy of an object create with new changes 
+	  syntax var a = person with {};
+
+Some General terminology:
+{} - method invocation operator;
+. - Console.WriteLine() - . is the member access operator
+int is an alias of System.Int32
+
+1. NameSpace: Collection of class
+     > Using PATA = ProjectA.TeamA; we can make the alias to the namespace to resolve the ambiguity
+	 in C# 10 namespace syntax - namespace <Name>;
+	 in older version namespace <Name> {
+	 									   }
+2. Main method is the entry point of the location.
+3. Escape sequences: '\n', \"
+    > if we put @(verbatim) before the string then escape sequences does not come in cosideration
+4. value types - int, float.
+     > Two type 
+	     > Nullable type:
+			eg. int? i = null; 
+		         Nullable<int> j = null;
+		 > Non nullable type:
+		    eg. int j = 0; 
+			
+			
+	> Assign non nullable to nullable:
+	    > j = i.value; 1st way //in this chances of error(Nullable object must have a value.) is there because if null assign to i
+		> j = (int)i; 2nd way //in this chances of error(Nullable object must have a value.) is there because if null assign to i
+		> j = i ?? 0; 3rd way. Nullable collesce operator; // Always use this method
+5. Reference type - array, class, String
+6. data type conversion:
+      > using (int) - type cast -- did through exception when assign large value
+	  > using convert.toint32() class - It will through exception when assign large value
+	  > using parse - int.Parse(strNum);
+7. When there is no loss of information then conversion done by compiler is called implicit conversion:
+    eg. int to float
+8. If we try to convert the "100TG" into int then use int.tryparse(str, out result) this will return the true and false.
+9. Array: collection of similar data types:
+        > int[] i = new int[3];
+10. Methods:
+        > Instance method: Call with the instance of the class. 
+		> Static method: Call without the class instance call directly by class name
+11. Call by Value:
+     > i and j both have different memory location;
+12. Call by refrence: using the ref keyword
+     > both share the same memory location
+13. Different parameters can be pass in the method:
+     > call by value
+	 > Call by ref using ref
+	 > Out parameter
+	 > params parameter - using in array - work like a spread operator
+14. Class - Class contains methods and data. 
+15. Constructor - use to initialize the class objects. and destructure is use to destruct the class from the memory;
+       > if we do not create the customer in the code the .net framework create it.
+	   > we can overload the custructor
+16. This keyword in c# refers to the instance of the class.
+17. Static and instance class members:
+     > static Field: 
+	      > It share the one copy or one location in the memory when we create the different instance of the class.
+	 > Static methods can be access without the object of the class same as static field
+	 > any member which have static keyword in front of it know as static member other wise instance member or non static member;
+	 > Static constructor use to initialize the static fields and not have access modifier and it called before the instance constructor
+	 > static class cannot have instance constructor which means we cannot create the instance of the static class.
+18. Pillars of OOPS:
+    > Inheritance:
+      > Code reusability 
+	      > Common field and methods we can put them in the base class and reuse in derived class
+		  > C# supports only single base class inheritance and multilevel inheritance;
+		  > C# supports multiple base interface inheritance
+		  > base class constructor invokes before the child class constructor
+	
+	> Polymorphism: 
+	      > Use the derived class method using base class reference at run time
+		  > in base class make virtual method and in derived class make the override of that funtion
+		  > this is called method overriding.(method with same name with same signature)
+		  
+19. Method hiding:
+    > to hide the member of the class we can use the new keyword
+	> to inovke the base class hide method we can use the
+	    > base.MethodName()
+		> type cast (base)Child
+		> or by declare the base class and child class together
+		    > base bs = new Child(); 
+19.1 - Difference between method hiding and method over ridding:
+       - in method hiding the base class reference variable pointing to the child class object then it calls the hide method of base class.
+       - in method overriding if the base class refrence variable pointing to the child class object then it calls the method of child class.	   
+20. Method Overloading: 
+     > Method with same name but different signature(number of parameter, type of parameter, Kind of parameter(ref or out- refer point-13));
+21. Why we need properties:
+      > To better control over the fields if someone set the id to negative number then it will bad.
+	  > If any language don't support properties then there is getter and setter methods to control over the user input.
+	  > Public int ID{  --- before c# 3.0 - ist way
+	  get{
+	  }
+	  set{
+	  }
+	  }
+      > public int ID {get; set;} -- in c# 3.0 -- auto implemented properties - 2nd way
+	  >  public int CustomerId { get => _customerId; set => _customerId = value; }  3rd way - which is in C# dont know in which version this come
+22. select the field right click and click on refactory option and then encapsulated field it will generate the property for us.
+23. Structure: also have fields, methods, and properties and constructor like class;
+24: object initaliazation syntax: Customer cs = new Customer { field1 = "value", field2 = "value" };
+25. Differences of class and structure 
+     1. Reference type        Value type
+	 2. saved in heap         save in memory
+	 3. have destructor       not have destructor
+	 4. have parameterless    not have parameterless constructor
+	    constructor             
+     5. in change in copy       no effect
+	   does affect actual one 
+	 6. Can initialize properties   in this cannot 
+	 7. They can inherit from base     they cannot inherit from the base struct.
+	  class            
+	 
+	   
+26. Interface:
+      > interface have methods and delegate but only declaration not defintion
+	  > classes can be inherit muliple interface
+	  > Should define or implement all members of the interface in the derived class;
+	  > We can not create the instance of the interface but we can create a refrence of interface which can be point to the derived class.
+      > Explicit interface implementation: 
+	         > When a class inherit from two interface and both the interface have same method then in class we have to implement them explicitly by Void Interface.MethodName()
+27. Abstract Class:
+       > it is like interface can have only declaration in form of abstract member and also non abstract members and abstract class object not be made only reference type
+	          variable can create which point to child class
+	   > these classes are use as base class
+	   > abstract class members must be implement by Child class with the override keyword;
+	   
+28.  similarities between abstract and interface
+	 1. object can not be create for both
+	 2. Both are incomplete
+	 3. both use as base class
+
+29. Differences between abstract and interface:
+     1. abstract class members are private by default while interface public
+     2. abstract class can have implementation of the members whereas intertace does not allow
+     3. Abstract class can have fields where interface does not have	 
+     4. Abstract class can be inherit from interface and abstract class where as interface can inherit from only interface
+	 5. Abstract class can not inherit multiple class while interface can
+30. Multiple inheritance problem:
+     1.If A is base class having a virtual method then b and c class inherit from the A class and override this virtual method and D class inherit from 
+	    B, C then which override method should call for D class this ambguity called the diamond problem.
+     2. This problem can be solve by interface.
+31. Delegate:
+     > it is a type safe pointer to a function;
+	 > we made the instance of the function in the class and pass the function in that and then call that instance to invoke the function
+	 > there syntax is same funtion which delagate is pointing.
+	 > delegate declaration can be replace by lambda expression;
+	 > delegate use for writing the framework so that user can implement their logic.
+32. Multi cast delegate
+     > use to register or assign the different method to the delegate:
+	     > there are 2 ways of doing this:
+		      > by creating the multiple objects and assign them to the delegate using + sign
+			  > by creating the single instance and assign methods to that instance using += sign
+33. Exception Handling:
+    > try and catch use to handle the exception 
+	> it protect the data from hacking.
+	> System.Exception class is used for this.
+34. Inner Exception:
+    > It holds the original exeception which comes and it is in the exception caused by the catch exeception.
+35. We can also make the custom exception by making a class and inherit from the Exception class and invoke the EXception class Constructor;
+36. Exception abusing when your program control flow is handle by the exception. this should be handled by the logic in the code like denominator should not be zero;
+37. Types :
+       > Are class. struct, enums etc
+	   > and the fields, methods, properties are the type members.
+38. #region <name> is use to create the outline for better maintainability to the code.
+39. Access modifier:
+     > Public
+	    > members can be available to any container type.
+	 > private
+	    > members only accessible with in the container type.
+	 > Protected
+	    > members can be accessible with in the container and to the container which is derived from the container which has the protected member 
+		    > Ways to invoke it.
+     			> base.Id, this.Id, Create the instance of the derived container and then access using that object.
+	 > internal
+	    > members can be accessible with in the assembly 
+	 > protected internal
+	    > members can be accessible with in the assembly and to the class derived in another assembly.
+		> for eg. Assembly1.dll have class A which has protected internal member if we want to access in other assembly Assembly2.dll in class B then
+		 we have to derived the class B from A and use the member using B class object and through base.Id.
+		 
+	> type can have only public and internal access modifier where as type member can have all of these.
+	> for type default access modifier is internal.
+	> for type member the default access modifier is private.
+40. Attribute:
+    > it is used to add the decorative information to your program. For eg. [obselete] is use to tell the coder that a method or anything is obselete and you can
+	  also add the information to use the new one.
+41. Reflection:
+    > used to get the information about the class at the run time. like the methods, properties and constructor
+42. Late binding:
+    > create the instance of the class at run time and invoke the methods at run time.
+	    > we first get the excecuting assemblies and create the type using reflection and then create instance and get methods from type and invoke that methods by passing 
+		instance and parameter.
+43. Generics:
+     > allow to make the code type independent. 
+44. convert.tostring and tostring()
+      > it handle null whereas .tostring() cannot.
+45. System.string and stringbuilder
+      > string are immutable so when we change it, it create the new location in memory means create new object in the heap where as stringbuilder not create new
+	     object in the memory when we try to change it.
+46. Partial Class:
+     > break down a class into two or more files.
+	 > all partial class should have same access modifier
+	 > one partial class inherit from a base class can have access to other partial class
+47. Partial methods:
+    > they have two parts:
+	    > Declaration and implementation
+	> they can have only declaration also 
+48. Indexer 
+     > it is like the sql reader in which we pass the value and can access the column
+     > Syntax : access modifier return type this[int variablename]{get;set;}
+	 
+49. Optional parameter:
+        > we can make a parameter optional in method using 4 ways:
+		      > Using params 
+			  > using method overloading
+			  > using default value pass to the parameter
+			  > using optional attribute
+50. Code Snippet:
+       > add the readymade code 
+	      > 1st way by ctrl + K + X
+		  > write for then tab tab
+		  > right click > Code snippet
+		  > Edit > Intellisense > insert snippet
+		  
+	   > change i to j and then press tab it will change the next occurrence of i to j
+	   
+51. Dictonary:(Present in system.collection.generics)
+         > Collection of key value pair
+		 > key should be unique and value can be anything.
+		 Syntax
+		      > Dictonary<int, string> dict = new Dictonary<int, string>();
+	    > Array and list can be converted into Dictonary
+		> In count() function we can pass the condition in lambda expression
+52. List: (Present in system.collection.generics)
+       >It is one of the collection which have same type of datatype
+	   > Methods > Find, FindAll, FindLast, Index, Insert
+	   > We can convert list into array and dictionary
+	   > AddRange, InsertRange, GetRange, RemoveRange methods use to handle a list to add/remove/insert(at particular position)/get in existing list
+	   > Sort 
+	       > simple types(int, strint etc)
+		      > list.sort();
+			  
+		   > Complex type:
+              > 1st way Inherit from IComparable interface and implement compareto
+              > 2nd way create another class and inherit from icomparer interface and implement compare method
+  			  > 3rd way by create a comparision delegate
+			      > it can also be done by 3 ways 
+				      > 1st by create a method and instance of delegate and then pass the instance to the sort method.
+					  > 2nd Directly pass the delegate in the sort method
+					  > 3rd by using the lambda expression
+		 > TrueForAll Method:
+		        > return true or false on tha basis of a pass predicate condition
+		 > AsReadOnly Method:
+		        > Gives a list of readonlycollecton which cannot be add or remove just read.
+		 > TrimExcess method:
+		       > Remove the extra capacity of the list on the basis of present element in the list.
+53. We have to use dictionary over list if the requirement is to only lookups.
+54. Queue:
+         > it is a collection which follow first in first out
+		 > Present in system.collection.generics;
+		 > Enqueue method is used to add the items in the queue
+		 > Dequeue method is used to get the item from the queue but once get it will remove from the queue.
+		 > peek method is used to get the item from the queue without removing it
+		 
+55. Stack:
+        > it follow last in first out.
+		> push method to add in stack
+		> pop to get the item from the stack and remove it
+		> peek give last item and not remove it
+		
+56. Thread:
+        > present in system.threading class
+		> light weight process
+		> UI Thread: once we run our application a thread run in background and resposible to excecuting the code
+		> Make application more responsive by executing the task which is time consuming.
+		> Thread thread = new Thread(Number.PrintNumber); // 1st way to call the method using thread.
+        > Thread thread = new Thread(new ThreadStart(Number.PrintNumber)); // 2nd way by creating a thread start delegate
+        > Thread thread = new Thread(delegate () { Number.PrintNumber(); }); // 3rd way by wrting delegate keyword
+        > Thread thread = new Thread(() => Number.PrintNumber()); // 4th way by using lambda expression
+		> Parametarized thread start delegate:
+		       > to pass the parameter to the function which thread pointing 
+	    > We can retrieve the value from the thread using the callback delegate which point the function and we can pass the delagate to the class constructor.
+		> JOIn method is used to wait the main thread until the running thread finish or not.
+		> ISAlive method check the thread is still running or not.
+		
+	 > for concurrent process we can use Interlocked.Increment for adding and substraction function
+	     and lock machenism
+		 
+57. Anonymous method: They are the method without name and can be used as a delegate instance without writing separate method and pass into the delegate.
+                      1. Introduced in c# 2
+					 
+58. Lambda Expression: 1. Introduced in c# 3. 
+                       2. Lambda Operator - => and also called as goesto
+					   3. Helpful in write linq query operations.
+59. Func delegate - use to pass the parameter in delegate and return the string.
+60. Async and await - Use for make application responsive when executing the large task.
+61. We can use the async over thread when acheiving UI responsive as it is easy to write code
+62. When we use thread so we have to first use join in thread which make process work but UI still not responsive so to overcome this
+    we update the field which we want after complete the thread inside the thread and here another problem can come 
+	In Thread we can only update the properties which is belong to particular thread. Like in our case we updating the label with character read
+	and we do inside the child thread and now child thread will update the property which create by the main thread 
+	so to overcome this we use begininvoke method. And code become complex so we use Async and await.
+63. Extension method in C# - 
+	 add the method in the int class or we can say it enable us to add new methods to the existing type.
+	 for eg if we add a method AddTwo in the int class -- int num = 0;
+	 int newNumber = num.AddTwo(); --- this is extension method this is not present in int class this is added by us..
+	 
+	 And we can make extension method by adding static in from of the class which have AddTwo Method and pass this in the parameter in function.
+	static class NumberHelper
+    {
+        public static int AddTwo(this int num)
+        {
+            return num + 2;
+        }
+    }	
+64.ByDefault Comparision operator for record is value type. 
+      Ways to override equals and equalto sign to compare refrence type
+	1st - 	public override bool Equals(object obj)
+	{
+		return (this.X == ((CPoint)obj).X) && (this.Y == ((CPoint)obj).Y);
+	}
+	'
+	2nd - //public static bool operator ==(CPoint a, CPoint b) => a.X == b.X && a.Y == b.Y;
+ 
+65. We can add flags attribute to enum - and use them like - var a = Enum.A | Enum.B
+      then it will show result like this - A,B otherwise it will add the values of A & B. 
+	 
+66. int? age = null;
+     age = 12;
+     age ??= 17; which means age = age ?? 17;	 
+	 
+67. name?.Trim() we can use this to check it the string is not null or empty then do that otherwise not like js.
+68. Switch Expression - introduced in C# 8.
+
+static ShiftDays GetShiftDays(DayOfWeek day) => day switch
+{
+    DayOfWeek.Monday => ShiftDays.Monday,
+    DayOfWeek.Tuesday => ShiftDays.Tuesday,
+    DayOfWeek.Wednesday => ShiftDays.Wednesday,
+    DayOfWeek.Thursday => ShiftDays.Thursday,
+    DayOfWeek.Friday => ShiftDays.Friday,
+    DayOfWeek.Saturday => ShiftDays.Saturday,
+    DayOfWeek.Sunday => ShiftDays.Sunday,
+    _ => throw new ArgumentException("Invalid day of week suppliied")
+
+};
+
+	int i = 5;
+	var output = i switch { 
+	5 => "Hello",
+	_=> "Default"
+	};
+	Console.WriteLine(output);
+
+
+69. Pattern matching - introduced in c# 7.
+   if(a != null) - now we can write this like if(a is not null) {}
+
+70. ShiftWorker? swv = p as ShiftWorker; // this is casting p into shiftworker. Here p i IPerson Instance.
+    if(p != null){
+	}
+	we can write above lines like this
+	
+	if(p is ShiftWorker swv)
+	{
+	}
+	
+	in this eg we are using and or expression in swtich.
+	 string returnValue = padChar switch
+        {
+            (>= 'a' and <= 'z') or (>= 'A' and <= 'Z') => 
+                input.Trim().PadLeft(length, padChar),
+            >= '0' and <= '9'=>
+               input.Trim().PadRight(length, padChar),
+            _=> "No match found for pad character"
+        };
+
+     property pattern - 
+	 static bool IsWorkingInWeekend(DateTime days) => days  switch
+	{
+		{ DayOfWeek: DayOfWeek.Saturday or DayOfWeek.Sunday } => true,
+		_ => false
+	};
+
+71. Guard condition -
+       in switch expression we can also add some condition with when like below:
+		   int i = 5;
+	var output = i switch { 
+	5 when i % 2 == 0 => "Hello",
+	_=> "Default"
+	};

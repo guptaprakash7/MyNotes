@@ -1,0 +1,303 @@
+https://www.pragimtech.com/courses/how-to-become-a-full-stack-web-developer-from-scratch/
+What is internet?
+it is a network of network or we can say it is a bunch of connected device.
+
+
+Mozilla developer network(MDN) is the great resource to learn technologies related to web development.
+
+C++
+1. cout << "Hello";
+
+HTML
+1. Elements - IT has opening tag and closing tag and content between them.
+2. Tags - keywords to know the browser how the content will format or display.
+3. Attribute : special properties added to the element. 
+ 	3.1 Boolean attribute : like disabled in the text element of form element. eg. <input type="text" disabled/>
+    3.2 We can write the attribute value without quote but it can cause issue like in below eg 
+	   <a href=https://www.mozilla.org/ title=The Mozilla homepage>favorite website</a> 
+	   in the title attribute browser misinterprets the "the" as a value and mozilla and homepage as a boolean attribute
+      
+    3.3. We can write a quote inside the quote in the attribute value using the html entities in this case &apos --'Isn't this fun?'
+             <a href='https://www.example.com' title='Isn&apos;t this fun?'>A link to my example.</a>	
+4. Doctype - tells us about a valid doctype.
+5. <html> - wraps all the content of the page and know as root element.
+6. <head> - contains the information about the meta deta like css and links and none of its content show on the webpage
+7. <body> - all the content goes inside this.	
+8. <!-- and -->  comments in html. Shortcut key for vs code - ctrl + / for comment and uncomment.
+9. there is a shortcut in the vscode to generate the basic page with all the basic element like html, head, body --- "!" then enter tab
+10. lists - <Ol> to make the order list like - 1. 2. 3.
+            <ul> - to make the un ordered list like bullets	
+11. <a> - anchor tag to make a text a link.
+12. <img src="image"> - to add the image in the webpage.
+13. HTML5 is the latest evolution of html standards(set of rules to follow in html language).
+14. Inline element > which place together in a single block. like anchor tag
+15. Block element > which takes separate block and not share it with others
+16. Div is container which hold other element and it is a block element.
+17. Span is container which is used to apply css in a particular word or anything in a line. And it is inline element.	
+18. <s> </s> - to cut the letter by line.
+19. <Hr> - to put the horizontal line.
+20. <br> - to break the paragraph.	
+21. <sup> - to show power. like power of 10.
+22. <sub> - to show the number down the letter.	- useful in making formula for chemistry.
+23. Html entity code - 1. help in write the special characters or reserved html keyword like < and >
+                2. Starts with ampersand sign and end with semicolon.
+                3. eg: &spades; for chiddi ka sign , &lt; for < sign	
+24. Semanting markup - Give meaning to the markup and tell what does particular element works. Like header and nav  instead of div.
+       1. Main - tell about main content.
+       2. Nav - Tell about the links in the page 
+       3. Section - like div - it is a generic container.	   
+	   4. Aritcle - used for some specific content like weather report.
+	   5. Aside - conent pointing to main.
+	   6. Header - tell about header of the page.
+	   7. Footer - tells about the footer of the page.
+25. Tables: table structure set of data. Which has rows and columns.	
+26. <table> element - used to create table. <td> which is used for show table data. <tr> to make table row. <th> to make table header.	
+         1. <thead> for Group header rows. <tbody> for group the td data or body.
+27. Rowspan - to combine row. Col span - to combine columns.	
+28. Form - Form element is a container which handles to submit the form data to the server.
+        - action attibute represents where data will be sent.
+29. Interactive element of form:
+     1. Input - it is a element which hold data and it has "type" attribute which defines whether it will be text, password or date picker 
+	 2. Label - element which describes the input element. and if we give the id attribute to the input like id="user" and in label we add attribute for="user"
+	            then they connected each other so if we tap on label focus will be move to the associated input element in this case "user" 
+	 3. Button - to add the button. 
+             1. 1st way to create button - <button> </button> - here type attribute is by default "submit" and on click it will take the request to the action pass in form
+                            and to change this behaviour we can pass the type attibute to "button".
+             2. 2nd way is by <input type="Submit" value="Click me"> 							
+	 4. Name Attribute - whenever we submit data it will take the data to the server and value of name goes as a parameter. Like http://test.com/?username=&somename
+	                      here username is taken from the name attibute of the field
+     5. Checkbox - to add checkbox.			
+	 6. Radio button - to add radio button in which one thing you can select. - to connect them we have to give the same name to all the radion button like male and female 
+	                      name attribute will be gender. And to send the value of radio button to the server we have value attribute.
+	 7. Select is to add the dropdown.
+	    <select name="meal" id="meal">
+                        <option value="">--Please choose an option</option>
+                        <option value="fish">fish</option>
+                        <option value="veg">Vegeterian</option>
+                        <option value="steak">steak</option>
+
+                    </select>
+     8. Range - to add range element. -- <input type="range" name="cheese_level" id="cheese"min="1" max="10">	 
+	 9. text area - to add the text area --   <textarea name="story" id="" cols="30" rows="10"></textarea>		
+	 10. Validations -
+         	 1. required - need to fill the field value
+             2. minlength - minimum length of the character need
+             3. Max length	- maximum lenth of the character need.
+
+CSS -
+1. selector - name of the class
+2. Property - like height, width, color
+3. Value - like 200 px, red.
+4. Ways to apply css 
+        1. Inline css - not a good approach as we cannot reuse the css to other element we have to change at places where we use it.
+		 <h1 style="color: cyan;"> H1 element </h1>
+	    2. Using style element - also not a good approach as we cannot use it in other pages
+		   <style>
+        h2 {
+            color: palevioletred;
+        }
+		</style>
+		
+        3. External stylesheet - good approach.
+		<link rel="stylesheet" href="app.css">
+		h2 {
+    color: indigo;
+}
+4. ways to add color - 
+      1. Write name - like red, blue
+	  2. by Rgb - rgb(255, 255, 255)
+	  3. by hexadecimal - #FFFFFF
+	  site to know the colors - https://htmlcolorcodes.com/color-picker/
+5. Properties for text:
+      1. text-align	- for right, center
+	  2. font-weight - for show bold
+	  3. text-decoration - for underline
+	  4. line-height - for space between the lines.
+	  5. letter-spacing - for add space between the letters.
+	  6. font-size - set the font size
+	  7. font-family - for set the font name. if the font not available then we can give choices to it by comma separate them. -- https://www.cssfontstack.com/
+	  8. text-transform:uppercase; - for making uppercase
+6. Units of size
+    1. absolute units(not good for responsive websites)
+        1. px
+    2. relative units
+        2. em	
+7.Types of selector:
+   1. universal selector - it will change all the element color to pink which support the color properties.
+          * {
+              color: pink;
+      }
+		
+   2. Element selector: change the properties of all element of that name.
+         	button {
+             font-size: 40px;
+            }	
+   3. selector list: select more than one element.
+        h1,h2{
+        color: royalblue;
+       }   
+   4. ID selector - to change the properties of a particular element. --- id attibute already used in input elemement so we should use class selector.
+     #signup{
+       background-color: #540b0e;
+       } 
+	    <button id="signup">Sign Up</button>
+		
+	5. class selector - to change the properties to group of element.
+             
+		.tag {
+			background-color: #283618;
+			color: #f1faee;
+		}	
+	<span class="tag">dogs</span>
+	
+	6. descendent selector - syntax 
+	span a {
+    color: purple;
+   }
+    which means all anchor tag inside the span change color to purple.
+	
+	7. Adjacent selector:
+  	  h2 + button {
+       background-color: grey;
+    } 
+	which means any single button after the h2 tag.
+	
+	8. Direct descendent selector:
+	footer > a {
+    color: indianred;
+    }
+	
+	all direct descendent selector after footer.
+	
+	9. Attribute selector:
+	apply css on basis of attibute
+	
+	input[type="password"] {
+    background-color: indigo;
+  }
+   
+   10. Pseudo classes :
+   .post a:hover{
+    color:lightseagreen;
+   }
+    any hover comes under post class and on hover change it color
+   .post button:active{
+    color:lightseagreen;
+   }
+   on active change its color
+
+   .post:nth-of-type(2n){
+    background-color: lime;
+   }
+   every 2nd section change the color. 
+	
+   11. pseudo elements
+   h2::first-letter {
+   font-size: 30px
+   }
+   makes first letter of every h2 element font size - 30px
+	
+8. Last css will be reflect in the browser. for eg.
+   h1{
+   color:red
+   }
+	h1{
+	color:pink
+	}
+	
+	in this case pink will be reflect on the browser.
+	
+9. Specify: - tells which css will apply.
+     id is more specific than class then element.
+	 so if id selector is apply and element selector also then the id selector win.
+	
+10. Inline styles are more specific then id, class, element. - bad idea to use it
+11. IF we write !important after any css property then it will apply to the element instead of any inline, id, class and elemement. - bad idea to use it
+12. Inheritance in CSS. - if we apply the color on the body then its child elemement also change to that color which have bydefault inherit set in color properties.
+13. the box model: - content area is in blue, padding is in green, margin in orange.
+    1. content area - 
+    2. Height & width - change the height and width of content area which is in blue.
+    3. border - 
+          border-color: #264653;
+          border-style: inset;
+          border-width: 10px;	we can also write in single line - border: #110e0c solid 5px;
+          border-radius: 20px 20px 20px 20px; - to make it curvey.
+    4. padding - distance between the actual content to the border of the box. it is inside the element.	  
+	     padding-left, padding-right, padding-top, padding-bottom
+         shorthand - padding:10px - all four sides
+                     padding:10px 20px - 10px top bottom and 20px left right.
+                     padding: 10px 20px 30px; - top, horizontal, bottom
+					 padding: 10px 20px 30px 10px; top, right, bottom, left
+    5. Margin - It is outside the element. Distance between the border of the element to the other element. shorthand properties are same as padding.
+	6. Display property: can change the block level element like h1 to inline and inline to block level.
+	         1. inline-block - if we give inline then div elemement shrink. so we give it to inline-block - here little gap will be there between div.
+14. CSS Units:
+      1. percentage
+           1. width and height - 10% which means 10% of the parent element.
+          Note:  Not in all properties percentage work same in case of line height it will behave differently. 
+           2. line-height:20% in this case 20% of the font.	   
+	  2. em - call it "M" if we set the font size of h1 to 1em then it means the font size will be the 1 time of the parent element font size it is relative with it.
+	          and if we set the margin-left to 2 em then it means whatever the font-size of h1 after calculating from the parent it is 2 time of it so margin will me 2 time of it.
+			  so if we change the font size of h1 then margin will also change as it is relative to font-size of h1
+	   Note - problem with em is that if we use ul and li then it multiply the em with the parent the child become large so the solution of this is rem.
+	  3. rem - it based upon the root element.
+15.	Alpha channel - to provide the transparency. Its value is from 0 to 1. 
+#rgba{
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 50%;
+    height: 50%;
+}
+Note - in Alpha channel transparency will only apply to the elemement on which this css apply.
+
+16. Opacity - It also apply for transparency in the background-color to the elemement
+     Difference with alpha channel is that transparency also apply to the child elemement. like if we apply the opacity properties to the div then it will apply to the content of div also
+	 its value also ranges from 0 to 1.
+
+17. Position: 
+         1. Static - no change if we set top to 100px
+         2. Relative - change to the 100px from its last position.
+         3. Absolute - Change to the 100px from the parent elemement.
+         4. Fixed - change to the 100px from the parent elemement but if we scroll down the page it will move with it.
+
+18. Transition Property: to provide animation. -- https://easings.net/# for timing functions.
+          transition: background-color 2s, border-radius 3s; it has propertyname, timing function like ease out, ease in, timing how much it will take like 2 sec
+                        and delay- it also in time. 		  
+
+19. Transforms - Transform the element by rotating, scaling(size change), translate(move), skew(change angle).
+20. Background-image - to set the image in the background.
+21. Google font - to get the font from google - font.google.com and you can select the style and copy link address.						
+22. If we write the inline elemement in a separate line then there will be a space add between them.	
+23. CSS Flex box - to provide the flexible space to the element when page shrink. It is basically use for the responsive website.
+	1. flex model: it has main-axis - which is left to right in case of flex-direction set to row and cross axix which is top to bottom.
+	            and main axis to top to bottom if the flex-direction set to column and cross axis is left to right.
+	2. Flex-direction - it has values like "row" to show the data in left to right and "column" to show data in vertical way. 
+	3. Justify-content - to align the content in only main-axis. - it depends on the flex-direction.
+    4. Flex-wrap - if the width increase to move to the next line we use the flex-wrap: wrap. it works with both axis. 
+	              it move in the cross direction
+    5. algin-item - if it is set to flex end and direction set to column then to move to right corner which means it moves to the cross direction.
+	6. Align-content - remove the space between the elemement and show then in center, flex-start(left or top). This move the content to the cross direction.
+	                   it did not work if flex-wrap is not set to wrap or rap reverse.
+					   
+	7. Align-self - to center, flex-start, flex-end a particular elemement from the div. It move in cross direction.
+	8. Flex-basis - to give inital width to the elemement.
+	9. flex-grow -   flex-grow: 1; if the extra space then the element grow to cover up the space.
+	10. flex-shrink - if there is less space then element shrink. - flex-shrink: 2;
+	11. Flex shorthand - 
+	         1. flex: 2 - which means flex grow
+			 2. flex: 2 100px which means flex grow, flex - basis
+			 3. flex: 2 1 100px which means flex grow, shrink, flex basis
+	
+24 - Media Queries - Make responsible to run the wesbsites in mulitple screen sizes.
+@media( max-width:2000px){
+    body{
+        color: blue;
+    }
+}
+which means if width becomes more than 2000px change the color of the body to blue.
+
+Bootstrap: Framework of CSS which has readymade component and we can use them.
+-- add link in the head to include bootstrap in the project.
+1.container - to give the content some margin.
+2. button -    <button class="btn btn-primary"> Primary</button> 	   
+3. typography - documentation for global settings.
+4. grid - to add grid 

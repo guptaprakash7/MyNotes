@@ -1,0 +1,1021 @@
+
+	
+Javascript:
+1. Data types-
+   
+   1. Primitve Datatype -
+     1. Number - like 1,2 
+	       1. we can use +, *, / operator on numbers to evaluate its values. 3**2 which means square of 3 which is 9.
+		   2.
+	 2. String - "Prakash"
+	       1. - to put string in double quote we can use 
+		        let quote = "You had me at \"hello\"";
+		   2. quote[0] - gives Y as the output.
+		   3. let user = "Prakash";
+		         user.length - give 7.
+           4. some common method in string - 
+                 1. bold() - to make bold
+                 2. charAt(1) - give r.
+	             3. toUpperCase() - "PRAKASH"	
+                 4. trim() - delete white space - " prakash "  gives "prakash".
+                 5. indexOf(arg) - "Prakash".indexOf('a') - gives 2.
+                 6. slice(startindex, [optional]endIndex) - here end index is optional - "Prakash".slice(2) - gives "akash" not change the orginal string 
+                       instead of give another string. "Prakash".slice(2,4) - "ak"
+                       also we can give negative start index then it work in reverse manner - "Prakash"(-2) gives "sh"		
+                 7. Replace('What you need to replace', 'with what'); - "Prakash".replace('a', 's') - gives 'prskash'					   
+			
+			
+	 3. boolean - true, false
+	 4. null 
+	 5. undefined
+   2. 
+   3. typeof 1 - gives "number" it is used to give the datatype of any value.
+            1. typeof 1 - "number"
+			2. typeof "a" - "string"
+			3. typeof true - "boolean"
+			4. typeof null - "object"
+			5. typeof undefined - 'undefined'
+			6. typeof nan - 'number' - so in this case we use - isNaN(NaN) - which gives true.
+	4. IsNan- use to find where the passed values is not a number. if value is number it give true
+	      IsNaN(1) - false
+		  IsNan(NaN) - true
+		  IsNan("a") - true
+		  IsNan(null)- false
+		  IsNan(undefined) - true
+	5. NaN - it comes when  we divide number with a text - 1/"a" gives nan.
+	           1. if we do (Nan + 1) - then it give NaN
+	
+2. // - this is used to comment 
+
+
+	
+3. variables - use to store the value.
+    Types of variables - 
+         1. const - value never change assign only one time.
+		 2. let - gives block scope
+		 3. var - 
+		
+4. Naming convention -
+    1. cannot start with digit.
+    2. name should be in camelCase.
+   
+5. arguments which we pass to method at call time.   
+	
+6. string template literals -
+         1. useful in making concatenation strings;
+         2. let firstName = "Prakash"; `Hello my name is ${firstName}`; gives 'Hello my name is Prakash'
+
+7. Decision making - 
+		 whether to display it or not.
+		1. comparision operator
+		       1. >, <, ==, ===(in this we check the datatype also), !=, !==, 
+			    
+				null == undefined - gives true
+				0 == false - gives true
+				'' == false - gives true
+				'' == 0 - gives true 
+				so always use === for comparision 
+				
+8. console.log(), console.warn(), console.error()
+9. alert is to show the message, prompt(enter user name) is to take input from user.
+10. parseInt('101') - give 101 
+11. if we want to go to next line in console we need to hit shift + enter.
+12. for connect the html with javascript - 
+      <script src="app.js"></script>
+				
+13. false, 0, '', null, undefined, nan  all are in if condition return false.
+14. logical and - both should be true, logical or - only one can true, logical not - opposite.
+15. switch.
+16. Arrays - collection of data.
+        let colors = ['orange', 'red'];
+		push - add elemement to end.
+		pop - remove element from the end.
+		shift - remove from start 
+		unshift - add in start. -- newarr.unshift('cc') it add the cc elemement to the start.
+		concat - to merge two arrays let newarr = weekDays.concat(otherArra) we can also change it to - let newarr = [...weekDays, ...otherArra];
+		include - tell the element present in the array or not.
+		indexOf - to give the index of the particular elemement.
+		reverse - newarr.reverse() - reverse the elemement of the array.
+		join - newarr.join(',') - make the element by comma separate values in string., newarr.toString() to the same thing.
+		slice(start, end) - gives the part of the array.
+        splice - to place any elemement in between the array or to remove the elemement from in between the array.
+        sort - to sort the elemement of the arrays. on the basis of first word.		
+17. Eqality in Reference type
+      let nums1 = [1];
+      let nums2 = [1];
+	  nums1 == nums2 give fales as it is not comparing the content here it is comparing the memory location.
+ 
+      let nums1 = [1];
+	  let nums2 = nums1;
+	  nums1 === nums2 - gives true as here both the array pointing to the same location in the memory.
+	  and if we push and pop a elemement in nums1 or nums2 it will reflect in both.
+	 
+18. const + arrays -
+
+     const arr = [1, 2, 3];
+	 here we can change the content of the const array
+	 arr.push(4); will  be allowed as it is not changing the memory location.
+	 but arr = [1, 2, 3] again is not allowed. 
+	  
+19. Objects - collection of key value pairs;
+	const person = {firstName:'Prakash', lastName:'Gupta'};
+	
+	accessing objects:
+	person['firstName'] - gives prakash
+	person.firstName - gives prakash
+	difference between the above two is - we can use variable also in 1st case.
+	
+    modifying objects:
+	person.firstName = "Sachin";
+	person.lastName = "Tendulkar";
+	
+	person["firstName"] = "Sachin";
+	person["lastName"] = "Tendulkar";
+	
+	1. Object.Keys(person) - give ['firstname', lastName] - arrays of keys
+	2. Object.values(person1) - give ['Prakash', 'Gupta'] - arrays of values.
+	3. Object.entries(person1) - ['firstName', 'Prakash']
+								['lastName', 'Gupta']
+	
+20. Loops:
+    for loops - for(initialize; condition; increment/decrement).
+    while loops - while(condition)
+    iterating over arrays - 
+      1. first by for loop 
+      2. for of loop - 
+
+		const colorArr = ['red', 'black', 'blue'];
+		for (const iterator of colorArr) {
+			console.log(iterator);
+		}
+	iterating over object - using for in loop
+	const person = { firstName: 'Prakash', lastName: 'Gupta' };
+
+	for (const key in person) {
+
+		console.log(`${key} ${person[key]}`);
+	}
+	
+21. Functions - these are reusable code.
+     1. function hello(){
+	 
+	 }
+	 2. Arguments to the function -- hello(arg1); - here args1 is a argument - this is the one which we pass at the call time.
+	 3. parameter to the function --- function hello(message){} - when we define the function we pass the parameter
+	 4. return keyword
+	            1. it use to hold the value return by the function in a variable at the call time.
+				2. it terminate the execution of the function.
+				
+22. Functional Scope: -- scope of a variable outside or inside the function.
+   
+     1. a variable let total = 0; if it also in the function and only assign value = 6 is there then console.log print outside gives the value 6
+       if we call the function before console.log.
+	   	
+	let totalEggs = 0;
+
+	function collect() {
+		totalEggs = 6;
+		console.log(totalEggs);
+	}
+	collect();
+	console.log(totalEggs); -- BOTH print 6 6
+	   
+     2. if a variable is declare with same name inside and outside the function then on console.log outside the function take the value of outside which is 0 and 
+       if we console.log inside the function then it take 6.
+	   	let totalEggs = 0;
+
+	function collect() {
+		let totalEggs = 6;
+		console.log(totalEggs);
+	}
+	collect();
+	console.log(totalEggs); --  print 6 0
+	   
+     3. if the variable declare outside the function then we can use it in the function also.
+	 
+	 
+     4. but if a variable is declare only inside the function then we can not use it outside.	 
+
+23. block scope: - scope of a variable inside or outside the block.
+     1. earlier only one way to declare the variable which was using var and after that let and const introduced
+	 2. let and const provide the block scope which means if a variable declare inside a block then it cannot be use after it.
+	 if (true) {
+    let message = "hi";
+    var msg = "hssi";
+	}
+	console.log(message);
+	console.log(msg);
+
+	Here console.log(message); gives error Uncaught ReferenceError: message is not defined
+     and 	console.log(msg); - will print the value of msg which is "hssi";
+	 
+	
+24. Lexical scope - scope of a variable inside a child function.
+		function Outer() {
+    let message = "this is a outer function variable";
+
+    function inner() {
+        console.log(message);
+    }
+    inner();
+	}
+	Outer();
+    here message variable can be access in the inner function.
+	
+25. function expression:
+    different way to define a function
+	const add = function(x, y){
+	return x + y;
+	}
+	add(5, 6);
+      
+	
+26. Higher order function - 
+     function that can accept function as an argument and return function also.
+	 1. for accept function as a parameter.
+		const add = function (x, y) {
+			console.log(`${x + y}`);
+		}
+
+		function CallTwice(func) {
+			func(5, 6);
+			func(5, 6);
+		}
+
+		CallTwice(add);
+		
+	2. Return function using function
+		function outer() {
+			return function inner() {
+				console.log("hi i am inner");
+			}
+		}	
+		const func = outer();
+		func(); - give "hi i am inner"
+		
+27. Methods - function which inside the object are known as methods:
+
+	const myMath = {
+    PI: 3.14159,
+    square: function (num) {
+        return num * num;
+    },
+    cube: function (num) {
+        return num ** num;
+    }
+	}
+	
+	myMath.cube(3); -- gives 27.
+
+	as this type of method use very commonly there is a shorthand of this method used nowdays:
+	
+	const myMath1 = {
+		PI: 3.14159,
+		add(num){
+			return num * num;
+
+		},
+		cube(num){
+		return num ** num;
+		}
+	}
+	
+28. this keyword:
+     1. if in a object have method and we use this inside that method then it give the object itself.
+	  const cat = {
+		name: 'billi',
+		color: 'patani',
+		meow() {
+			console.log("Meo");
+			console.log(`${this.color}`);
+		}
+	}
+ 
+   here this gives the object itselt.
+     
+   const cat1 = cat.meow;
+if we call cat1() then this gives the window object.
+
+Arrow functions and this - 
+const person = {
+    firstName: 'Prakash',
+    lastName: 'Gupta',
+    fullName: function () {
+        console.log(`${this.firstName} ${this.lastName}`);
+    },
+    fullNameArrow: () => {
+        console.log(`${this.firstName} ${this.lastName}`);
+    },
+    callSetTimeOut: function () {
+        setTimeout(function () {
+            console.log(`${this.firstName} ${this.lastName}`);
+        }, 3000);
+    }
+	  callSetTimeOutArrow: function () {
+        setTimeout(()=> {
+            console.log(`${this.firstName} ${this.lastName}`);
+        }, 3000);
+    }
+}
+
+
+here -  person.fullName() - gives Prakash Gupta
+		person.fullNameArrow() -- gives undefined undefined
+		person.callSetTimeOut() -- gives undefined undefined
+		person.callSetTimeOutArrow() -- gives Prakash Gupta
+
+
+29. try/catch. we use if we know this code can give error and if this happen the application crash so we add try catch and code after that can be run without any issue;
+30. 
+	try {
+
+		hello;
+	}
+	catch {
+		console.log("Error occured");
+	}
+
+	console.log("after that");  
+	
+31. Some array methods
+   1. foreach - to access all the members of the array.
+	const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
+	arr.forEach(function (el) {
+		console.log(el);
+	})
+	
+	we can use for of loop in place of for each method.
+	
+	2.Map function  - it also takes a function and access all the elemement of the array but it return a new array.
+	
+	const double = arr.map(function (el) { return el * 2 });
+	
+	const movieTitles = movies.map(function (el) { return el.title });
+	
+32. Arrow functions - Newer syntax to write functions expression which save function in a variable in javascript.
+	
+	const movieTitles = movies.map((el) => el.title);
+
+	const add = (x, y) =>{
+				return x + y;
+		}
+	we can change it to implicit return - here curly braces replace with the brackets.
+	const add = (x, y) => (
+			x + y
+	)
+	
+	
+	we can write it in more precise way - one liner implicit return.
+	const addNew = (x, y) => x + y;
+	
+	also if there is only single parameter then we can omit brackets also.
+	const square = x => x * x;
+	
+	without parameter syntax
+	
+	const greet = () => "Hello Friend";
+	
+33. settimeout - to stop the execution for some time or to call a function in a particular time.
+		setTimeout(() => {
+    console.log("Hello");
+	}, 3000);
+	
+34. setinterval - repeat every some time.
+		setInterval(() => {
+    console.log("hii");
+	}, 2000);
+	
+	clearinterval(id) - will stop the setinterval method.
+	   
+35. filter - to filter the values from the given array and give a new array according to the condition.
+
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
+
+const filterArr = arr.filter(n => n % 2 === 0);
+gives - [2, 4, 6, 8];
+
+while if we use map in place of this it gives [false, true, false ...and so on];
+
+we can combine filter and map
+const goodMovies = movies.filter(m => m.score > 90).map(m => m.title);
+
+
+36. every - check every element of the array satisfying the condition then it return true or false.
+const exams = [80, 98, 92, 78, 77, 90, 89, 84, 81, 77]
+
+const result = exams.every(n => n >= 70);
+
+37. some - check some element of the array satisfying the condition then it return true or false.
+  const result = exams.some(n => n >= 70);
+	
+38. Reduce - in this we can pass a callback function which takes two value - previous value and current value.
+
+	let total = 0;
+	for (let price of prices) {
+		total += price
+	}
+	console.log(total);
+
+	this can be replaced using reduce method.
+	const total1 = prices.reduce((prevValue, currentValue) => prevValue + currentValue);
+
+	console.log(total1);
+	
+	Also we can pass the initial value for the prevValue as the second argunment-
+	const evens = [2, 4, 6, 8];
+	const sum = evens.reduce((sum, num) => sum + num, 100);
+	it gives - 120.
+
+39. Default params - 
+	in old we check if the parameters of the function are undefined or not if they undefined then we assign some default value.
+
+	function multiply(a, b){
+		if(a == undefined){
+		a= 1;
+		}
+		return a * b;
+	}
+	New way of assign default value is this -- pass the default value in the passing parameter time.
+	const multiply = (a, b = 1) => {
+		return a * b;
+	}
+	> we pass default params generally to the second parameter.
+
+	> default value assign only when value is undefined - in other case like '', null - these value '', null will be assign.
+
+40. Spread syntax -
+	(...variableName)
+	> suppose we have two array - 
+		const a = [1, 2];
+		const b = [3, 4];
+		const c = [a, b]; > will give [[arr1], [arr2]]
+		it not combine these array -- but if we use const c = [...a, ...b];
+		c = [1, 2, 3, 4];
+	
+	> const arr = [3, 1, 2, 5, 7];
+		let maxValue = Math.max(arr);
+		//output -- NAN
+
+		maxValue = Math.max(...arr); //output - 7
+
+	> console.log([..."hello"]) // -> ["h", "e", "l", "l", "o"];
+	> console.log(..."hello") -- h e l l o 
+	> same work with objects -
+		const cat = { legs: 4, isFurry: true };
+		const dog = { eyes: 4, isPet: true };
+
+		const catdog = { ...cat, ...dog }; //{legs: 4, isFurry: true, eyes: 4, isPet: true}
+		
+	> to add new property in the object and copy old one
+	   const catNew = { ...cat, isMamal: true }; // {legs: 4, isFurry: true, isMamal: true}
+	   
+41. Rest params -
+	> it works like params in c# -- suppose if ...c is pass in the function then what ever values pass to it will treat as an array
+			
+		function Demo(...restNumbers) {
+			console.log(restNumbers);
+		}
+		//output - Demo(2, 3, 4) -- [2, 3, 4]
+
+
+42. Deconstructing
+
+	> deconstruct array and objects
+	> for array --
+		const fullName = ["Chandra", "Kanta", "Gupta"];
+
+		//old way of deconstructing array
+		const firstName = fullName[0];
+		const middleName = fullName[1];
+		const lastName = fullName[2];
+
+		//new way
+		const [fName, midName, lasName] = fullName;
+		
+	> for objects -
+		
+		const user = { name: "Prakash Gupta", age: 28, birthPlace: "Mathura" };
+
+		//old way of deconstructing object
+
+		let name = user.name;
+		let age = user.age;
+
+		//new way
+		const { name, age } = user;
+			> we can change name of variable and assign default values also
+				const {name: userName, age : userAge = 2} = user;
+
+				
+	> deconstructing params -
+		function person({ name, age }, email) {
+			console.log(`${name} ${age} ${email}`);
+			}
+			// person(user) -- Prakash gupta 28
+
+		
+
+43. DOM - document object model -
+	> java script representaion of a web page.
+	> iteract between js and html
+	
+	> document - it is a object which have all the content of the web page in javascript object form.
+	  console.dir(document); -- covert document in the object form
+	
+	ways to select the element from the web page
+	> document.getElementById('toc') - return element whose id is toc
+	> document.getElementsByTagName('img') - gives the collection of all the images in the webpage. we can iterate over these using for of loop.
+	> const image = document.getElementsByClassName('square') - return the collection of element who have this class 'square'
+	> const query = document.querySelector('h1') 
+	        > this is the latest way to get the element from the dom. in this we can select on the basis of tagname, id, class and can also select the particular image
+			or any element on the basis of attribute.
+		    > it gives the first element from the group of elemement
+            > document.querySelector('h1')  - it give the first h1 from the webpage.
+            > const query = document.querySelector('a[href="/wiki/Java"]') - it gives the anchor tag whose href is "/wiki/Java"
+            > const query = document.querySelector('a[title="Java"]') - it gives the anchor tag whose title is java	
+			> const query = document.querySelector(#toc) - it gives the first element whose id is toc.
+			> const query = document.querySelector(.banner) - it gives the first elemement whose class name is banner.
+			> const query = document.querySelector('input[formcontrolname="password"]') - gives the first input element whose formcontrolname = "password"
+	> const query = document.querySelectorAll('h1') - gives the collection of h1 element in the web page
+	
+	
+	> ways to manipulate the dom
+	   > inner text - document.querySelector('h1').innerText = "change value" - it change the first h1 to change value.
+	   > text content - document.querySelector('h1').textcontent = "change value"
+	    difference between them is textcontent also show the values which display is set to none.
+	   > innerhtml - document.querySelector('h1').innerHTML = '<i>Change value</i>'
+	           here it set the change value to italic as we are changing the html here as it get the text with the html tags.
+	   
+	   > Select and Update attribute of the element
+	      > Select -
+			> first way 
+				- const hrefLink = document.querySelector('a')
+				- hreflink.href -- it gives ---'file:///E:/wiki/List_of_chicken_breeds'	
+					
+					
+			> second way -
+				> hrefLink.getAttribute('href') -- it gives -- '/wiki/List_of_chicken_breeds'
+				
+			both by properties and by getAttribute are mostly same but in some attribute gives different result like for href	
+			
+		 > update - 
+			> first way
+			   > hrefLink.href ="https://google.com";
+			   
+			> second way
+			   > hrefLink.setAttribute('href', "https://google.com")
+			   
+		> select and update css - 
+             > 	const h1Element = document.querySelector('h1');
+				h1.style.color = "red";
+			    but it set it to its inline css.
+			
+			> window.getComputedStyle(h1Element).fontSize -- gives the font size of h1.
+              as if we write h1.style.fontSize --- then it gives empty string as we did not any inline css.			
+		
+		> select and update class -
+			const h2Element = document.querySelector('h2')
+			> 1st way - 
+					for select the class - h2Element.getAttribute('class');
+					
+                    for set the class - h2Element.setAttribute('class', 'purple')
+                                        but in this if we want to apply one more class then it override the previous class.
+										
+								        so we can do like this --const currentClass = h2Element.getAttribute('class');
+                                                                 h2Element.setAttribute('class', `${currentClass} purple`);
+										but this is not a good way of doing as if there is so many class then it will fail so to overcome this we have class list.
+										
+		    > 2nd way - using class list -
+									h2Element.classList.add('purple')
+									h2Element.classList.add('border')
+									
+									> also we can check the class is exist or not 
+									h2Element.classList.contains('border') - returns true
+									
+									> also we can remove the class using -
+									h2Element.classList.remove('border');
+									
+									> also we can toggle the class means on and off it.
+									
+									h2Element.classList.toggle('border') -if the class is present then it remove otherwise add.
+									
+		
+		> Parent element, next Sibling, Previous sibling
+			const firstBold = document.querySelector('b')
+			
+			> const parent = firstBold.parentElement --- this gives paragraph elemement
+			
+			> parent.children -- this gives the html collection which contains children of paragraph element.
+			
+			> NextSibling and nextelementSibling
+				const firstImage = document.querySelector('img');
+				firstImage.nextSibling -- this gives the text node not the next element so usually gives text node.
+				
+				firstImage.nextElementSibling -- this gives the next element sibling like paragraph.
+									
+	        > previoussibling and previousElementSibling -
+				firstImage.previousSibling - gives text node.
+				firstImage.previousElementSibling -- gives h2 element in our case.
+				
+		
+		> Create Element and append child
+			> to create new element like image link we use createElement Functiona
+			const image = document.createElement('img');
+			image.src = 'download.jpg';
+			
+			> to add this new element or we can say new node to the element like body, paragraph at the end -
+			document.body.appendChild(image);
+			
+			> Append - to add one or more new things like text or node to the elemement at the last.
+			    > 
+			> prepend - to add one or more new things like text to the elemement at the start. 
+			
+		> to remove the element -
+			> 1st way using removechild method - in this we need to first get the parentelement of the element
+			and then call parentelement.removechild(element);
+			const button1 = document.querySelector('button');
+			const parentEle = button1.parentElement;					
+			parentEle.removeChild(button1);
+			
+			> 2nd way using the remove method -  this is the latest way to remove the element from the dom.
+			const h1element = document.querySelector('h1');
+			h1element.remove()
+		
+44. DOM Events -
+	> inline events - this done in html
+	   <button onclick="alert('Hello')">Click me</button>
+        > this is not a good practice because if we need to run the same logic on the second button then we need to copy the same code.
+    
+	> by setting the onclick property from js.
+		function onClickButton1(){
+			alert("Hello button 1");
+		}
+		const button1 = document.querySelector('#button1');
+		button1.onclick = onClickButton1;
+		
+		> here we can only assign one function to the onclick property.
+		
+	> by using addeventlistener method:
+	
+		const button2 = document.querySelector('#button2');
+		button2.addEventListener('click', function(){
+		console.log('you clicked me!!');
+		});
+
+		button2.addEventListener('click', ()=>{
+		console.log('you clicked me2!!');
+		}, {once: true});
+		
+		> here we can assign multiple function to the same button and also have better control over it like we can pass extra options in 
+		  third parameter like once etc.
+
+	
+	> whenever a callback happen then in the callback function the "this" refers to the element on which it happened.
+	for eg if on a button we add eventlistener and then we pass a callback function to change the color of the button then if we use this in the function
+	        then we get the button object.
+	
+	> event object - this is the parameter pass in callback in addEventListener method and it has the information like key name etc.
+	const inputField = document.querySelector('input');
+
+		inputField.addEventListener('keydown',
+		function(e){
+		console.log(e)
+
+		})
+       here if we press any key then we can get which key is pressed using e.code
+	
+	> PreventDefault - to stop the default behavior of the element - we use e.PreventDefault(); method.
+	 for eg. -> if we submit the form then it refresh the browser if we want to stop this we can use the preventdefault method.
+			 const shelterForm = document.querySelector('#shelterForm');
+
+			shelterForm.addEventListener("submit", function(e){
+			e.preventDefault();
+			console.log("submitted");
+			})
+	
+	
+	> input event - whenever we put the input in the field this event fires
+		const inputEventField = document.querySelector('#input');
+
+			inputEventField.addEventListener('input', function(){
+				console.log('is from input event')
+
+			})
+
+	> change event - whenver we change the value in the field and after that we move to other field or put focus on other field then this event occur.
+	   const changeEventField = document.querySelector('#change');
+
+			changeEventField.addEventListener('change', function(){
+				console.log('is from change event')
+				
+			})
+
+
+    > event bubbling - if we add onclick on a section and a button is inside that section and if we want to click the button then section 
+	                  click also called at that time so this is event bubbling to stop this use stopPropagation() method in the call.
+
+
+    > event delegation to apply the event to the parent if the child element is not present at the time of loading page.
+	         > e.target.nodeName === "LI" && e.target.remove(); -- here is an eg where we find the target is LI and we are removing it
+	
+	
+45. Call stack - any program run in a stack form in javascript which works in lifo manner last in first out.
+                 debbuger console in call stack window we can see the call stack. and also we can see the call stack using http://latentflip.com/loupe
+
+46. when we run the web api request and timeout functions the js pass it to the browser to remind javascript to run the code after specific time.
+
+47. Call back - when we request to server for database and after it success or failure the function call after that is called callback.
+48. Call back hell - when multiple callbacks inside the call back.
+49. Promises - is the good way to handle the callbacks. new promise((resolve, reject)=>{})
+     > here we use .then(()=>{}).catch(()=>{})	to handle the success or failure.
+
+50. Async - when we write async before the function then it automatically return the promise behind the scene.
+	>	// async function hello(){
+
+		// }
+
+	>	const sing = async ()=>{
+		return 'Prakash'
+		}
+
+		sing()
+		.then(data=>{
+			console.log('welcome', data)
+		})
+		.catch(err=>{
+			
+		})
+		
+	> 
+	const login = async(userName, passWord) =>{
+		if(!userName || !passWord) throw 'Missing credentials'
+		if(passWord==="12345") return "Welcome"
+		throw "Invalid Password"
+	}
+
+	login('ssdd', '3')
+	.then(data=>{
+		console.log('Most', data)
+	})
+	.catch(err=>{
+		console.log('Error', err)
+	})	
+	
+51. Await - we can wait on for getting resolved of the async function.
+       > here we changing the color of the background
+		 const delayedColor = (color, delay) =>{
+			return new Promise((resolve, reject)=>{
+				setTimeout(()=>{
+					document.body.style.backgroundColor = color;
+					resolve();
+				}, delay)
+			})
+		}
+		
+       > this is using the promise.
+		// delayedColor('red', 1000)
+		// .then(()=> delayedColor('pink', 1000))
+		// .then(()=> delayedColor('green', 1000))
+		// .then(()=> delayedColor('yellow', 1000))
+		// .then(()=> delayedColor('orange', 1000))
+		// .then(()=> delayedColor('blue', 1000))
+
+      > this is using the await keyword we can change the above code.
+		async function rainBow(){
+			await delayedColor('pink', 1000)
+			await delayedColor('green', 1000)
+			await delayedColor('yellow', 1000)
+			await delayedColor('orange', 1000)
+			await delayedColor('blue', 1000)
+			await delayedColor('black', 1000)
+		}
+      
+	  > another usage of await.
+		async function PrintRainBow(){   
+			await rainBow();
+			console.log('finished')
+		}	
+	
+	> we can handle the rejection of the promise using the try/catch:
+	  
+	  async function makeRequest(){
+		   try{
+			let data = await fakeRequestUsingPromise('fake.com/api');
+			console.log(data)
+			let data1 = await fakeRequestUsingPromise('fake.com/api');
+			console.log(data1)
+		   }
+		catch(e){
+			console.log("Error caught");
+			console.log("Error is", e);
+		}
+
+		}
+		
+AJAX - Asynchronous javascript and xml.
+1. send request to the server and get response from the server.
+2. API - Application programming interface - which is the end point which respond to the request.
+
+JSON -JavaScript Object Notation
+> it is the way of passing data or a format of data to the api and getting data from the api in a format.
+> {"ticker":{"base":"BTC","target":"USD","price":"443.7807865468","volume":"31720.1493969300","change":"0.3766203596"},"timestamp":1399490941,"success":true,"error":""}
+> let a = JSON.parse(data); - to convert data which is in string format into the javascript object form
+> let a = JSON.Stringfy(data); - to convert the object data into the string form.
+> Null replaces  
+> to request api -we can use fiddler, postman, https://hoppscotch.io/
+> http verb - get, post, put, delete
+> http status code - 200, 201
+>query string - ?q="hi"&h="world"
+> headers - which is like meta data which have some extra information like Accept: application/json.
+	
+way to request to the server using javascript
+1. Using XMLHttpRequest - 
+		const req = new XMLHttpRequest();
+
+		req.onload = function(){
+		console.log("Loaded");
+		const data = this.responseText;
+		console.log(data);
+		}
+		req.onerror = function(){
+			console.log("Error!!");
+		}
+
+		req.open("GET", "https://tracker.spraxa.com/");
+		req.send();
+
+    > this is the old way.
+	
+2. using fetch - this return promise and a good way to handle callback. here the response which comes back we need to extract that using res.json()
+which also return promise.
+fetch("https://swapi.dev/api/people/1/")
+.then(res => {
+    console.log("FirstRequest done");
+    return res.json();
+})
+.then(data=>{
+    console.log(data);
+    return fetch("https://swapi.dev/api/people/2/");
+})
+.then(res=>{
+    console.log("second done");
+    return res.json(); 
+})
+.then(data=>{
+    console.log(data);
+})
+.catch(e=>{
+    console.log("Error!!!", e);
+})	
+	
+3. Fetch using async - 
+
+const functionShowingRequestToAPIUsingAsync = async()=>{
+    try{
+        const res = await fetch("https://swapi.dev/api/people/1/");
+        const data = await res.json();
+        console.log(data);
+        const res2 = await fetch("https://swapi.dev/api/people/2/");
+        const data2 = await res2.json();
+        console.log(data2);
+    }
+    catch(e){
+        console.log("Error!!!", e); 
+    }
+}
+
+4. 3rd method is using axios which is a library, here we get the response immediately after the request complete.
+// axios.get("https://swapi.dev/api/people/1/")
+// .then(res=>{
+//     console.log(res);
+// })
+// .catch(e=>{
+//     console.log(e);
+// })	
+   > here second parameter we can pass the config which can have the headers and other stuff
+   
+		const getDadJoke = async()=>{
+			const config = {headers:{Accept:'application/json'}};
+				try{
+				const res = await axios.get("https://icanhazdadjoke.com/", config);
+				console.log(res.data.joke);
+			}
+			catch(e)
+			{
+				console.log(e);
+			}
+
+		}
+	
+OOPS
+1. Prototype - its a object template which have functions in it which we can use in other objects.
+   like > [1,2,3].pop is a prototype whenever we create the instance of an array we get all the prototypes in it and we can use them
+   > also we can add our prototype in array or in string like this
+   > String.Prototype.NewFunction = ()=> console.log('hello');
+   > so whenever we create any string we are able to access this newfuntion also.
+   
+   
+2. Factory functions - which is used to create an object and return it.
+
+ function makeColor(r, g, b){
+    const color = {};
+    color.r = r,
+    color.g = g,
+    color.b = b,
+
+    color.rgb = function(){
+console.log(this)
+const {r,g,b} = this;
+console.log(`rgb(${r}, ${g}, ${b})`);
+    }
+return color;
+}
+
+const colors = makeColor(35, 45, 66);
+
+
+3. Constructor - 
+    AS in factory functions it create the rgb method on each object like colors and colors2 here colors.rgb === colors2.rgb gives
+	false because there references are different
+	
+	So constructor comes in the picture and it assign the methods in the prototype which is common for each object.
+		
+		function makeColor(r, g, b){
+		this.r = r,
+		this.g = g,
+		this.b = b
+	}
+	makeColor.prototype.rgb = function(){
+		console.log(this)
+		const {r,g,b} = this;
+		console.log(`rgb(${r}, ${g}, ${b})`);
+			}
+
+	const colors = new makeColor(35, 45, 66);
+	const color2 = new makeColor(352, 45, 66);
+	
+	
+	> if we just write makeColor(35, 45, 66); then it gives undefined
+	> new keyword creates and object and return it implicitly. without new here this returns the window object.
+	> here colors.rgb === colors2.rgb gives true.
+	
+4. Class - As in constructor function to assign any method we need to write like this color.prototype.rgb
+
+          but in case of class we need to just define class and add the function in it. 
+          In class we need to create the constructor method which calls when we create the instance of the class using new keyword.
+
+	class MakeColor {
+		constructor(r, g, b){
+			this.r = r,
+			this.g = g,
+			this.b = b        
+		}
+
+		rgb(){
+			const {r,g,b} = this;
+			console.log(`rgb(${r}, ${g}, ${b})`);
+		}
+	}
+	const colors = new MakeColor(35, 45, 66);
+	const color2 = new MakeColor(352, 45, 66);
+
+5. Extends - it is used to inherit one class from another. all the methods of base class we can use in child class.
+6. Super - suppose if the child class also has constructor then if we want to call the base class constructor then use super keyword.
+
+		class Pet
+		{
+		constructor(name, age){
+			this.name = name;
+			this.age = age;
+		}
+		eat(){
+			console.log(`${this.name} is eating.`);
+		}
+		}
+
+		class Cat extends Pet{
+			constructor(name, age, lifeLeft){
+				super(name, age);
+				this.lifeLeft = lifeLeft;
+			}
+			meow(){
+				console.log('Meow!!');
+			}
+		}
+
+
+		class Dog extends Pet{
+			bark(){
+				console.log('Woff!!');
+			}
+		}
+   > here class pet is the base class and dog and cat inherit from pet class using the extend keyword and we can also access the eat method 
+   using both class reference.
+   > and in cat class we have its own constructor which is calling base class constructor for name and age using super and for third property
+   lifeleft using its own constructor.
+   
+   
+		  
+	

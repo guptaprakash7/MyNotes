@@ -1,0 +1,22 @@
+
+   
+Angular js -
+1. Module - to break application into pieces.
+2. Directives - like ng-app in body tag to tell it is a angular app.
+3. Expression - {{}} it is used to evaluate value.
+
+Angular 2 - latest version is 11.
+1. npm i -g @angular/cli -- to install angular globally.
+2. ng new angular-crash  -- to create new angular app.
+3. ng serve - to compile and build.
+4. ng generate component header -- to generate new component.
+5. To pass data from parent to child - we use @Input text = '';
+6. eventemitter and output - to fire event like click from the component
+     @Output() btnClick = new EventEmitter()
+     
+	 onClick() {
+    this.btnClick.emit();
+  }
+  
+      <app-button color="green" text="Add" (btnClick)="toggleAddTask()"></app-button>
+7. ngfor - work as for loop.

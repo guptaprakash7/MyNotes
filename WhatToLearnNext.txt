@@ -1,0 +1,631 @@
+citius tech - in 2021
+1. how authentication run in webapi - 
+2. architecture of web api or pattern - hosting layer, message layer
+3. webapi is stateless or statefull - stateless
+4. call and apply in js
+
+coforge in 13th dec 2022 - 1st round done.
+
+1. if no try catch is there then how can log info in db. - using Application_Error method in global.asax.
+2. middleware in .net core - 
+3. filters in .net core. - 
+4. microsoft azure. 
+5. how to hoist web app on server.
+6. How to use authorization in web app.
+7. how to update table name in entityframework.
+8. library for sorting and paging in grid in react. - ant grid.
+9. how to minified the js file or make bundle - npm run build. earlier it was using webpack.
+10. how to use the themes for the different user. - need to use sass.
+11. How to allow ips in the webapi to access the data.
+
+valuelabs - 13th dec 2022 - 
+
+1. dependency injection
+2. how to run transaction using entityframework - context.database.begintransaction
+3. static class.
+4. how to implement left join in the entityframework
+var query = from b in context.Set<Blog>()
+            join p in context.Set<Post>()
+                on b.BlogId equals p.BlogId into grouping
+            from p in grouping.DefaultIfEmpty()
+            select new { b, p };
+5. inheritance in C#.
+6. how we find out the error in the production
+7. Can we use functions in stored procedure.
+
+tech mahindra 1st round - 14th dec 
+1. what is middleware in .net core and how to add middleware. - by use method
+2. configure function use - to set the request pipeline.
+3. Attribute routing in web api - to send the request to the particular route.
+4. polymorphism in C#.
+5. abstraction in c#.
+6. what is webapi.
+7. dense ranking in sql
+8. cte, table variable, temp table.
+9. how to apply join on the function. - cross apply and outer apply.
+10. where we use cte.
+11. What is react.
+12. component in react.
+13. react life cycle
+14. ref uses and syntax.
+15. what is virtual dom - 
+16. What is synthetic property.
+
+Tech mahindra - 1st round - 15th dec.
+1. what is joins
+2. types of joins
+3. indexes and its types
+4. difference between primary key and unique key
+5. inheritance in c#.
+6. interface in C#
+7. What is extension methods and why we use it. - if we need any change then to not change the previous one we can add the extension method.
+8. what is react and why we use it instead of angular.
+9. difference between class and function
+10. virtual dom
+11. program to find out the duplicate value from the array.
+
+const a = [1, 2, 3, 5, 3, 2];
+
+const b = [];
+const c = [];
+for (let i = 0; i < a.length; i++) {
+  if (b.indexOf(a[i]) == -1) {
+    c.push(a[i]);
+  }
+
+  b.push(a[i]);
+}
+console.log(c);
+
+
+12. Solid principles - full form of solid.
+	 
+beckeralliance
+1. Program to print half triangle 
+let string = ''
+
+for(let i = 0; i < 5; i++)
+{
+    
+     for (let j = 0; j < 5 - i; j++) {
+    string += " ";
+  }
+    for(let j = 0; j < i; j++)
+    {
+        string += "1"  }
+    string += "\n"
+}
+console.log(string)
+2. top 5th salary of employee.
+3. sql injection and how we can prevent it.
+
+
+IHS Markit - 1st round done
+1. primitive and non primitive data type in javascript
+2. compare two objects in javascript.
+3. What is ajax and write syntax.
+4. how the request works in client side and server side.
+5. how browser know about the jsx. - by transpiler
+6. what is hooks and methods in it.
+7. which property is use to center a text in css.
+8. what is prototype and closure in javascript.
+9. what is the use of static class.
+10. Solid principles.
+11. difference between display and visibility in css.
+12. How to pass props from child to parent in react.
+
+MotherSon
+1. Output questions
+2. pattern right triangle
+3. prime numbers program
+4. what is middleware and dependency injection
+5. what is design patterns.
+6. interface use in C#
+7. constructor in C#
+8. three models in the entity framework
+9. what is scrum and agile methodologies.
+10. What is sdlc.
+11. What is the difference between primary and unique key.
+12. write query for top 4th employee on the basis of salary.
+
+
+Droysis
+1. What is interface and its usage
+2. what is polymorphism
+3. what is index in sql
+4. what is sql profiler
+5. what is controlled and uncontrolled component in react
+6. what is hooks in react 
+> what is design patters
+> what is middleware
+> what is filters in C#
+> how to create custom attribute and what is attribute
+> why we need react.
+> what is abstract class and its usage
+> what is the role of setup class in .net core.
+> how can we optimize the react app
+> what is difference between viewbag and viewdata and tempdata in mvc
+> how to maintain session in mvc
+
+
+Miliman 
+
+> output questions 
+> what functionality gives functional component which is not in class component
+> what is useCallback() in react.
+> sort a array which have objects in it 
+var items = [
+  { name: 'Thor', value: 21 },
+  { name: 'Ironman', value: 37 },
+  { name: 'Hulk', value: 45 },
+  { name: 'Loki', value: -12 },
+  { name: 'Wanda', value: 13 },
+  { name: 'Hawkeye', value: 47 }
+];
+> value type and reference type
+
+
+Infinite 
+1. What is class and what is object in c#
+2. what architecture your application is follow
+3. var and dynamic in C#
+ var - cannot only declare, conversion at the time of compile time.
+ dynamic- can only declare, conversion at the time of run time.
+4. what is constructor in C#
+5. joins in Linq and its syntax
+6. What is design patterns.
+7. what is 3 tier architecture.
+8. dll and exe
+
+
+Droysis- 2nd round
+1. difference between static, readonly, const in c#
+
+const - need to assign at the time of decalaration. value check at compile time if we try to assign any value again to it
+readonly - can declare only and assign only by the default constructor and value checks at the run time 
+
+
+2. what is agile methodologies
+3. How can we fix the time take queries if database expand.
+4. what is dependency injection.
+5. can there multiple catches in c#
+6. what should be the order for multiple catches in C#
+7. what is there is an exception in the finally block.
+8. why .net core is better than .net framework.
+
+
+Siemen - 1st round
+1. Limitations of react 
+2. challenges you faces in react
+3. what is jsx and full form of jsx.
+4. how browser read able to read jsx.
+5. what is virtual dom.
+6. how react identify changes and sync with virtual dom
+7. which dom is slow virtual or real demo
+8. memory management done in which dom.
+9. component in react.
+10. difference between class component and functional component.
+11. what is higher order component.
+12. how can we avoid the binding in react.
+13. usememo in react.
+14. when we ref in react.
+15. what is usestate.
+16. what is hooks in react.
+17. how can we fix the slow renderning  in react.
+
+
+Mphasis
+1. What is the use of tuple and eg.
+2. how to use the same name methods of two interface in a derived class
+3. what is anonymous method.
+4. inumerable and iquerable.
+5. action filters in mvc c# use
+6. orders of filters in mvc C# 
+7. use of temp data in mvc
+8. how to validate model data in mvc
+9. how can we retrieve the querystring data in webapi
+10. Route prefix.
+11. different type of index in sql server.
+12. database normalization
+13. where and having clause difference
+
+
+tcs - 
+1. how to validate model
+2. define model in viewbag
+3. model binding
+4. html.text && html.textfor
+5. 
+
+
+ust - 
+1. docker, microservices
+2. how security run in your web api
+3. type of functions.
+4. 
+
+magic finserv
+1. abstraction
+2. data hiding
+3. polymorphism
+4. multiple inheritance
+5. dependency injection
+6. abstraction
+7. map, use, run
+8. mapwhen
+9. middleware in .net core
+10. implement singelton pattern.
+
+
+
+esq
+1. security control.
+2. how to change css in view in mvc
+3. auth authentication in web api
+4. role based authentication
+5. critical component of .net core.
+6. core clr
+7. how to resolve deadlock in sql query.
+8. access 
+9. broken access control.
+10. mvc application life cycle
+11. factorial of a number
+
+
+eponmere
+1. cross page posting - to post the data from one form to another.
+2. error code 500
+3. 403, 401
+4. multicast delegate usage
+5. oauth
+6. httpresponsemessage and ihttpactionresult.
+7. System.Array.Copyto and system.array.clone.
+8. implement deep copy 
+9. static constructor in C#.
+10. finalize and dispose
+11. defer execution in linq.
+
+
+motherson - final round
+
+
+to print right triangle pattern.
+let string = ''
+
+for(let i = 0; i < 5; i++)
+{
+    
+    for(let j = 0; j < i; j++)
+    {
+        string += "1"  }
+    string += "\n"
+}
+console.log(string)
+
+to find out duplicate values in array
+
+entity framework 6
+c# microsoft video
+
+Questions by Divyanshu
+
+1. difference b/w spread and rest parameters
+2. const obj = {...obj1};
+3. const asd = [1,2,3, [4,5,6, [7,8,9]]] -- simplify this array
+
+4. Palindrome check -
+const str = 'madam';
+const strArr = str.split('');
+const revStrArr = strArr.reverse();
+const revStr = revStrArr.join('');
+if (revStr == str) {
+  console.log('Palindrome')
+} else {
+  console.log('Not Palindrome')
+}
+
+5. const [data, setData] = useState();
+
+6. function App() {
+	const inputRef = useRef();
+	//inputRef.current.value
+	return (
+		<input ref={inputRef} />
+	);
+}
+7. redux
+
+1. difference b/w state and props
+2. context API
+3. hooks
+4. virtual DOM
+5. react lifecycle
+
+javascript -
+
+closure
+pure function
+function currying
+ES6
+data tpye
+constructor
+hoisting
+1.
+Encoder: encode ("aaaabccaadeeee") 
+Output should be nested array
+[[4, a] [1, b] [2, c] [2, a] [1, d][4, e]]
+
+
+
+
+2.
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+Input: nums = [0,1,0,12,3] 
+Output: [1,12,3,0,0]
+
+
+
+
+3.
+Print a pattern of numbers from to as shown below. Each of the numbers is separated by a single space. 
+For n = 2
+2 2 2
+2 1 2
+2 2 2
+
+For n = 4
+4 4 4 4 4 4 4
+4 3 3 3 3 3 4
+4 3 2 2 2 3 4
+4 3 2 1 2 3 4
+4 3 2 2 2 3 4
+4 3 3 3 3 3 4
+4 4 4 4 4 4 4
+
+
+
+
+4. n = 5
+
+            1
+         2 2 2
+      3 3 3 3 3
+   4 4 4 4 4 4 4
+5 5 5 5 5 5 5 5 5
+
+
+
+5. Panlindrome check
+6. Remove duplicate items from an array
+A - parent - state - number - useeffect - settimeout - 5 sec - number+1
+B - child - number as a prop - log it
+
+
+
+
+In app.js, is it possible ?
+export const a, export const b, export const c, export default d
+How can be access those a,b,c,d
+
+
+
+
+
+component A - let, var 
+in same component, there are
+component - B - let c, var d
+
+> We can't access component B variable in Component A
+console.log(a());
+var a = function() {
+  console.log(1);
+  setTimeout(() => { 
+	console.log(2)
+  });
+  console.log(3);
+}
+
+
+
+
+let a = [1,2,3,4,5];
+// Add 8 to array
+console.log(a);
+// final output: [8,1,2,3,4,5]
+
+>> a.unshift(8)
+Axios.get(‘/data’)
+.then(() => {​​ return 5; }​​)
+.then(v => {​​ console.log(v); return 8; }​​)
+.then(v => {​​ throw 5; return 10; }​​)
+.then(v => {​​ console.log(v) }​​)
+.catch(e => {​​ console.log(e) }​​)
+
+things to learn
+
+asp.net webapi
+asp.net core mvc
+react
+angular
+sql server
+mongo db
+microsoft azure
+devops
+microservices
+
+need to learn
+
+Python, rust, go and net core and node
+JS, React, vue, typescript, json, ajax
+mongo, sql, postrogresql
+docker and kubernets, linux
+
+React learning path
+
+1. fundamentals
+
+
+
+Must know concepts in js
+1. Let and const
+2. Shothand obj assignment
+3. Distructing assignment
+4. spread syntax
+5. Optional chaining
+6. Nullish coalescing operator
+7. Ternary operator
+8. Template literals
+9. Arrow function
+10. import and export
+
+https://www.youtube.com/watch?v=TIBuFjiIhVo
+
+https://www.youtube.com/watch?v=3oHEUHA24eU&t=634s
+
+dont buy wrong ac - search on youtube.
+
+
+
+
+SQL Questions:
+
+1. Write a query to create a new table which consists of data and structure copied from the other table.
+SELECT * INTO NewTable FROM EmployeeInfo WHERE 1 = 0;
+
+2. 	Write a query to fetch all the records from the EmployeeInfo table ordered by EmpLname in descending order and Department in the ascending order.
+SELECT * FROM EmployeeInfo ORDER BY EmpFname desc, Department asc;
+
+3. Write a query to fetch the department-wise count of employees sorted by department’s count in ascending order.
+SELECT Department, count(EmpID) AS EmpDeptCount 
+FROM EmployeeInfo GROUP BY Department 
+ORDER BY EmpDeptCount ASC;
+
+4. Write a query to retrieve duplicate records from a table.
+SELECT EmpID, EmpFname, Department COUNT(*) 
+FROM EmployeeInfo GROUP BY EmpID, EmpFname, Department 
+HAVING COUNT(*) > 1;
+
+
+c#
+1. What is Boxing and Unboxing in C#?
+
+
+https://www.dotnettricks.com/training/masters-program/dotnet-online-training
+
+to learn which concepts need to learn.
+
+
+
+
+> for interview i need to improve my communication 
+> learn dependency injection and middleware
+> learn authentication
+> learn solid principles and design pattern
+> sql performance related videos
+> read from official documentation of microsoft and see youtube videos of them for .net, c# and entityframework
+> learn react
+> create a app which perform basic crud operation
+> create a app which have login page and authentication and show the list using .net, sql and entityframework
+> do exercises on hackerrank.
+> do interview question preparation from google.
+
+
+
+1. Solid principles - full form of solid.
+   Solid principles is the five design principles used to make software design more understandable, flexible, and maintainable. 
+   
+   Problems related to software design 
+   1. a lots of functionality to the class
+   2. tightly coupled classes if we make a change in one other also affected
+   3. duplicate code 
+   
+   1. Single responsiblity principle - Every software module should have only one reason to change
+   means a class should have only one job to do. 
+   eg. a userservice class have register method along with it have sendmail and validateemail methods
+        so in this case sendemail and validateemail should be in the emailservice class.
+		
+		
+   2. open-close principle   - which say a A software module/class is open for extension and closed for modification".
+   new features should be implemented by new code but not by changing the existing code.
+   its benefit is it reduces the risk of breaking the existing application
+   
+   Eg. A account class has method for calculate interest for saving, salary and corporate suppose there is any change come to add the new type then we have to make changes in the
+   existing one which vilotes the ocp.
+   
+   so here we can create a interface which have balance property and calculateinterest method 
+   we can create separate class for regular, salary and current account type which inherit from the interface 
+   now each class will have their own logic.
+   
+   3. Liskov substitution principle
+     It says References to base class must use the objects of the derived class.
+	 We can check using LSP that inheritance is applied correctly or not in our code.
+     If class C is derived from P then C should be substitutable for P.
+	 
+	 
+	 A class trianle has virtual getshape() method and class circle derived from it 
+	 and override the getshape method so if we calls with the base class refrence pointing to child class this getshape() method it will give circle should give triangle
+	 
+	 
+	 so in this case we create a abstract class which have getshape method and we create the object of shape interface pointing to the circle and triangle
+	 call getshape will give the correct result.
+	 
+	 4. Interface segregation principle
+	 You shouldn’t be forced to implement an interface when your object doesn’t share that purpose
+	 A interface has multiple methods in it and if we inherit that interface to the class then all the class should implement the function if they have need it or not
+	 so in this case we can break into small interface and use them
+	 
+	 IOrder interface have ccprocess method and addtocart method if we inherit the onlineorder and offlineorder from it then offline order class has to implement it
+	 in this case we can create two interface which have ccprocess and other have addtocart method.
+	 
+	 5. Dependency inversion principle.
+	 High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+     Abstractions should not depend on details. Details should depend on abstractions.
+	 
+	 DI is a software design pattern that allows us to develop loosely coupled code
+	 
+	 
+	 we have a Filelogger class which is used for log exception into file
+	 
+	 we have a logexceptionclass which have the object of filelogger and in logexception method we are callingthe logexception method of the filelogger class
+	 if someone told to add db logging then we have to change our log exception class 
+	 
+	 which creates problems and our classes are tigthly coupled so we have to use interface which have logexceptionmessage method 
+	 
+	 so in constructor of logexception class we inject the interface object and now we can call the logexecption method in the logexception class 
+	 
+	 
+2. Design patterns - 
+ Design Patterns in the object-oriented world is a reusable solution to common software design problems that occur repeatedly in real-world application development. 
+ It is a template or description of how to solve problems that can be used in many situations.
+ 
+ 1. creational patters
+    1. abstract factory method
+	2. factory method
+	3. singelton method
+	4. prototype method.
+	5. 
+	
+	
+2. structural pattern
+    bridge 
+	adaptive pattern
+	decorator
+	
+3. behavioral pattern
+  state pattern
+  strategy pattern
+  
+
+3. Dependency injection - it is a design pattern to create loosely coupled software or modules 
+here higher level component should know low level components by abstraction
+it is use to write flexible, extensible and maintainable software
+
+
+https://learn.microsoft.com/en-us/users/dotnet/collections/8mq4im72x6xprg?WT.mc_id=dotnet-35129-website
+
+https://dotnet.microsoft.com/en-us/learn/aspnet
+
+https://learn.microsoft.com/en-us/users/dotnet/collections/2md8ip7z51wd47
+
+https://www.hackerrank.com/dashboard?h_r=hrw&h_l=confirmation_email&utm_source=hrw&utm_campaign=confirmation_domains&utm_medium=email

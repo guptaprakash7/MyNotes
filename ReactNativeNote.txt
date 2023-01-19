@@ -1,0 +1,44 @@
+ 
+
+	 
+
+
+
+	 
+React Native Notes:
+
+USING EXPO:
+1. npm i -g expo-cli - to install the expo cli.
+2. for create the project using expo - expo init <projectname>
+3. For debug the app in chrome - first shake the phone and select debug remote js 
+4. for debug the application in visual studio code:
+      > go to debug application button in left and then create launch.json and select the react native tool configuration.
+
+USING React Native CLI:
+1. install jdk8 using this command:
+     1. choco install -y nodejs.install openjdk8 
+2. Install Android Studio and set path.	 
+	 
+3. npx react-native init <project name>
+4. For run: 
+  1. npx react-native start
+  2. In Emulator - 
+      - npx react-native run-android  
+	 
+  3. if usb disconnect then again run app in debug mode without run npx react-native run-android - need to run this command -  adb reverse tcp:8081 tcp:8081
+  4. to clean the gradlew file - run cd android then run command - gradlew clean.
+  
+5. to debug app from the vs code - 
+      1. add plugin - react native tool
+      2. then in run and debug select react native > attach to packager.
+      3. then in launch.json > click on add configuration and add react native - attach to application> custom application
+	  
+  
+1. Components in react native:
+   1. View - it is like div.
+   2. SafeAreaView - it is for notch.
+   3. text- to write text. It has props like onpress, numberoflines
+   4. Image - for static image we write require and for dynamic image we create object and pass uri to it
+   5. Touchablewithoutfeedback - for touch without any feel
+   6. TouchableOpacity - for touch with feel
+   
