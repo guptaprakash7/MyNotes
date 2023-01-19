@@ -287,6 +287,33 @@ eponmere
 
 
 motherson - final round
+1. What is request delegate
+2. what is option pattern in .net core
+3. how routing works in asp.net core
+4. parameters require for file upload
+5. how to add data grid in asp.net page
+6. what are indexers in c#
+7. debug and release difference in visual studio
+8. 
+
+
+
+
+infinite 
+1. oops pillar
+2. solid principle
+3. configureservice and configure method
+4. use and run in .net core
+5. controlled and uncontrolled component
+6. react life cycle
+7. joins 
+8. difference between functions and stored procedure
+
+Techmahindra
+1. usestate
+2. useeffect
+3. how to enable session in .net core
+4. usememo
 
 
 to print right triangle pattern.
