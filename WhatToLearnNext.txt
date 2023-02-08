@@ -468,24 +468,15 @@ Axios.get(‘/data’)
 .then(v => {​​ console.log(v) }​​)
 .catch(e => {​​ console.log(e) }​​)
 
-things to learn
-
-asp.net webapi
-asp.net core mvc
-react
-angular
-sql server
-mongo db
-microsoft azure
-devops
-microservices
 
 need to learn
+1. test cases in react and in .net
+2. cloud - aws or azure
+3. typescript with react
+4. microservices and docker
+5. datastructure
+6. solves hackerrank questions and pattern questions
 
-Python, rust, go and net core and node
-JS, React, vue, typescript, json, ajax
-mongo, sql, postrogresql
-docker and kubernets, linux
 
 React learning path
 

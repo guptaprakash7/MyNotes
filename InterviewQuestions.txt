@@ -1,0 +1,412 @@
+//output and program questions
+1. pattern right triangle
+2. prime numbers program
+3. program to find out the duplicate value from the array.
+
+4.
+const a = [1, 2, 3, 5, 3, 2];
+
+const b = [];
+const c = [];
+for (let i = 0; i < a.length; i++) {
+  if (b.indexOf(a[i]) == -1) {
+    c.push(a[i]);
+  }
+
+  b.push(a[i]);
+}
+console.log(c);
+
+5. Program to print half triangle 
+let string = ''
+
+for(let i = 0; i < 5; i++)
+{
+    
+     for (let j = 0; j < 5 - i; j++) {
+    string += " ";
+  }
+    for(let j = 0; j < i; j++)
+    {
+        string += "1"  }
+    string += "\n"
+}
+console.log(string)
+
+6 sort a array which have objects in it 
+var items = [
+  { name: 'Thor', value: 21 },
+  { name: 'Ironman', value: 37 },
+  { name: 'Hulk', value: 45 },
+  { name: 'Loki', value: -12 },
+  { name: 'Wanda', value: 13 },
+  { name: 'Hawkeye', value: 47 }
+];
+
+
+11. factorial of a number
+
+12. to print right triangle pattern.
+
+let string = ''
+
+for(let i = 0; i < 5; i++)
+{
+    
+    for(let j = 0; j < i; j++)
+    {
+        string += "1"  }
+    string += "\n"
+}
+console.log(string)
+
+13. Palindrome check -
+const str = 'madam';
+const strArr = str.split('');
+const revStrArr = strArr.reverse();
+const revStr = revStrArr.join('');
+if (revStr == str) {
+  console.log('Palindrome')
+} else {
+  console.log('Not Palindrome')
+}
+
+14.
+Encoder: encode ("aaaabccaadeeee") 
+Output should be nested array
+[[4, a] [1, b] [2, c] [2, a] [1, d][4, e]]
+
+15.
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+Input: nums = [0,1,0,12,3] 
+Output: [1,12,3,0,0]
+
+
+16.
+Print a pattern of numbers from to as shown below. Each of the numbers is separated by a single space. 
+For n = 2
+2 2 2
+2 1 2
+2 2 2
+
+For n = 4
+4 4 4 4 4 4 4
+4 3 3 3 3 3 4
+4 3 2 2 2 3 4
+4 3 2 1 2 3 4
+4 3 2 2 2 3 4
+4 3 3 3 3 3 4
+4 4 4 4 4 4 4
+
+
+
+
+4. n = 5
+
+            1
+         2 2 2
+      3 3 3 3 3
+   4 4 4 4 4 4 4
+5 5 5 5 5 5 5 5 5
+
+17.
+console.log(a());
+var a = function() {
+  console.log(1);
+  setTimeout(() => { 
+	console.log(2)
+  });
+  console.log(3);
+}
+
+
+
+18.
+let a = [1,2,3,4,5];
+// Add 8 to array
+console.log(a);
+// final output: [8,1,2,3,4,5]
+
+>> a.unshift(8)
+
+19.
+Axios.get(‘/data’)
+.then(() => {​​ return 5; }​​)
+.then(v => {​​ console.log(v); return 8; }​​)
+.then(v => {​​ throw 5; return 10; }​​)
+.then(v => {​​ console.log(v) }​​)
+.catch(e => {​​ console.log(e) }​​)
+
+
+20. 
+const App = () => {
+  let boyName = "Jack"
+ 
+  const OnSetName= ()=>{
+      boyName = "Derby"
+  }
+ 
+  console.log(boyName)
+ 
+  return ( 
+      <button onClick={() => OnSetName()}> Click me</button>
+  )
+}
+
+21. 
+    for (var i = 0; i < 3; i++) {​​
+  setTimeout(() => {​​
+    console.log(i);
+  }​​, 1000);
+}​​
+
+22. const person1 = {
+    name:"Rohan",
+    address:{
+        city:'Delhi',
+        country:'India'
+    }
+}
+ 
+const person2 = person1;
+person2.address.city= "Banglore"
+console.log(person1.address.city)
+console.log(person2.address.city)
+
+23.    console.log('1');
+setTimeout(()=>console.log('2')}​​,3000);
+console.log('3');
+
+
+
+//javascript Questions
+1. call and apply in js
+2. primitive and non primitive data type in javascript
+3. compare two objects in javascript.
+4. What is ajax and write syntax.
+5. how the request works in client side and server side.
+6. what is prototype and closure in javascript.
+7. difference b/w spread and rest parameters
+8. const obj = {...obj1};
+9. const asd = [1,2,3, [4,5,6, [7,8,9]]] -- simplify this array
+10. slice and splice method
+11. closure
+12. pure function
+13. function currying
+14. ES6
+15. data tpye
+16. constructor
+17. hoisting
+
+
+//html and css
+1. difference between display and visibility in css.
+2. which property is use to center a text in css.
+
+
+//react js
+1. library for sorting and paging in grid in react. - ant grid.
+2. how to minified the js file or make bundle - npm run build. earlier it was using webpack.
+3. how to use the themes for the different user. - need to use sass.
+4. What is react and why we use it instead of angular.
+5. component in react.
+6. react life cycle
+7. ref uses and syntax.
+8. what is virtual dom - 
+9. What is synthetic property.
+10. what is react 
+11. difference between class and function
+12. virtual dom
+13. how browser know about the jsx. - by transpiler
+14. what is hooks and methods in it.
+15. How to pass props from child to parent in react.
+16. what is controlled and uncontrolled component in react
+17. why we need react.
+18. how can we optimize the react app
+19. what functionality gives functional component which is not in class component
+20 what is useCallback() in react.
+21. Limitations of react 
+22. challenges you faces in react
+23. what is jsx and full form of jsx.
+24. how react identify changes and sync with virtual dom
+25. which dom is slow virtual or real demo
+26. memory management done in which dom.
+27. component in react.
+28. what is higher order component.
+29. how can we avoid the binding in react.
+30. usememo in react.
+31. when we ref in react.
+32. what is usestate.
+33. what is hooks in react.
+34. how can we fix the slow renderning  in react.
+35. what is pure component
+36. react fiber
+37. what are the portals in react.
+38. usestate
+39. useeffect
+40. usememo
+41. difference b/w state and props
+42. context API
+43. react lifecycle
+
+
+//sql server
+1. Can we use functions in stored procedure.
+2. dense ranking in sql
+3. cte, table variable, temp table.
+4. how to apply join on the function. - cross apply and outer apply.
+5. where we use cte.
+6. what is joins and types of joins
+7. indexes and its types
+8. difference between primary key and unique key
+9. top 5th salary of employee.
+10. sql injection and how we can prevent it.
+12. write query for top 4th employee on the basis of salary.
+13. How can we fix the time take queries if database expand.
+14. different type of index in sql server.
+15. database normalization
+16. where and having clause difference
+17. how to resolve deadlock in sql query.
+18. can we delete clustered index from primary key
+19. how to analyze the performance in stored procedure
+20. how many types of parameters we can pass in stored procedure
+21. rank dense and dense rank
+22. normalization
+23. union and union all
+24. raiseerror.
+
+
+
+//asp.net 
+1. if no try catch is there then how can log info in db. - using Application_Error method in global.asax.
+2. what is 3 tier architecture.
+3. dll and exe
+4. what architecture your application is follow
+5. debug and release difference in visual studio
+6. web.config and machine.config file
+
+//.net core
+1. middleware in .net core - 
+2. filters in .net core. - 
+3. how to hoist web app on server.
+4. dependency injection
+5. what is middleware in .net core and how to add middleware. - by use method
+6. configure function use - to set the request pipeline.
+7. what is filters in C#
+8. how to create custom attribute and what is attribute
+9. what is the role of setup class in .net core.
+10. why .net core is better than .net framework.
+11. map, use, run
+12. mapwhen
+13. implement singelton pattern.
+14. critical component of .net core.
+15. core clr
+16. What is request delegate
+17. what is option pattern in .net core
+18. how routing works in asp.net core
+19. parameters require for file upload
+20. how to enable session in .net core
+
+
+//C# and oops
+1. static class.
+2. inheritance in C#.
+3. how we find out the error in the production
+4. polymorphism in C#.
+5. abstraction in c#.
+6. interface in C#
+7. What is extension methods and why we use it. - if we need any change then to not change the previous one we can add the extension method.
+8. Solid principles - full form of solid.
+9. what is design patterns.
+10. constructor in C#
+11. what is abstract class and its usage
+12. What is class and what is object in c#
+13. var and dynamic in C#
+ var - cannot only declare, conversion at the time of compile time.
+ dynamic- can only declare, conversion at the time of run time.
+
+14. value type and reference type
+
+15. difference between static, readonly, const in c#
+
+const - need to assign at the time of decalaration. value check at compile time if we try to assign any value again to it
+readonly - can declare only and assign only by the default constructor and value checks at the run time 
+
+16. can there multiple catches in c#
+17. what should be the order for multiple catches in C#
+18. what is there is an exception in the finally block.
+19. What is the use of tuple and eg.
+20. how to use the same name methods of two interface in a derived class
+21. what is anonymous method.
+22. inumerable and iquerable.
+23. multicast delegate usage
+24. System.Array.Copyto and system.array.clone.
+25. implement deep copy 
+26. static constructor in C#.
+27. finalize and dispose
+28. what are indexers in c#
+29. singleton and static difference why singelton came into the picture.
+30. is abstract class have constructor
+31. what are gang of four design pattern
+32. what is digit separaters.
+33. if return type different then it is method overloading?
+34. how to pass input parameter as a method
+
+
+//mvc
+1 what is difference between viewbag and viewdata and tempdata in mvc
+2 how to maintain session in mvc
+3. action filters in mvc c# use
+4. orders of filters in mvc C# 
+5. how to validate model data in mvc
+6. how to validate model
+7. define model in viewbag
+8. model binding
+9. html.text && html.textfor
+10. security control.
+11. how to change css in view in mvc
+12. broken access control.
+13. mvc application life cycle
+14. cross page posting - to post the data from one form to another.
+15. how to add data grid in asp.net page
+
+
+//web api
+1. how authentication run in webapi - 
+2. architecture of web api or pattern - hosting layer, message layer
+3. webapi is stateless or statefull - stateless
+4. How to use authorization in web app.
+5. How to allow ips in the webapi to access the data.
+6. Attribute routing in web api - to send the request to the particular route.
+7. what is webapi.
+8. how can we retrieve the querystring data in webapi
+9. Route prefix.
+10. auth authentication in web api
+11. role based authentication
+12. error code 500
+13. 403, 401
+14. oauth
+15. httpresponsemessage and ihttpactionresult.
+16. httppost and httpget can both apply on a method
+17. how to return json from web api
+
+//Entity framework and linq
+1. how to update table name in entityframework.
+2. how to run transaction using entityframework - context.database.begintransaction
+3. how to implement left join in the entityframework
+var query = from b in context.Set<Blog>()
+            join p in context.Set<Post>()
+                on b.BlogId equals p.BlogId into grouping
+            from p in grouping.DefaultIfEmpty()
+            select new { b, p };
+
+4. three models in the entity framework
+5. defer execution in linq.
+
+	 
+//agile and scrum
+1. what is scrum and agile methodologies.
+2. What is sdlc.
+3. if requirement did not pass then what you do 
+
+
