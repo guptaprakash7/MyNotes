@@ -274,7 +274,8 @@ console.log('3');
 22. normalization
 23. union and union all
 24. raiseerror.
-
+25. difference between varchar and nvarchar.
+26. Get data in xml from data table.
 
 
 //asp.net 
@@ -284,6 +285,8 @@ console.log('3');
 4. what architecture your application is follow
 5. debug and release difference in visual studio
 6. web.config and machine.config file
+7. pass the data from one web form to other web form
+8. how to bind the select option to a method in code behind 
 
 //.net core
 1. middleware in .net core - 
@@ -351,7 +354,7 @@ readonly - can declare only and assign only by the default constructor and value
 32. what is digit separaters.
 33. if return type different then it is method overloading?
 34. how to pass input parameter as a method
-
+35. pass delegate as a parameter to a method.
 
 //mvc
 1 what is difference between viewbag and viewdata and tempdata in mvc
@@ -369,7 +372,9 @@ readonly - can declare only and assign only by the default constructor and value
 13. mvc application life cycle
 14. cross page posting - to post the data from one form to another.
 15. how to add data grid in asp.net page
-
+16. tempdata from which namespace.
+17. callback method 
+18. remote validation 
 
 //web api
 1. how authentication run in webapi - 
@@ -390,6 +395,7 @@ readonly - can declare only and assign only by the default constructor and value
 16. httppost and httpget can both apply on a method
 17. how to return json from web api
 
+
 //Entity framework and linq
 1. how to update table name in entityframework.
 2. how to run transaction using entityframework - context.database.begintransaction
@@ -402,8 +408,10 @@ var query = from b in context.Set<Blog>()
 
 4. three models in the entity framework
 5. defer execution in linq.
+6. change the connection string at run time
+7. call the query on the multiple server at one time
+8. order by on name and id.
 
-	 
 //agile and scrum
 1. what is scrum and agile methodologies.
 2. What is sdlc.
